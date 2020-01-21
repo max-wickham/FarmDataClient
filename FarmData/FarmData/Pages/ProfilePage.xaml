@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:FarmData.Resources"
+             mc:Ignorable="d"
+             x:Class="FarmData.Pages.ProfilePage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label x:Name="UserName" Text="Max"/>
+            <Label x:Name="Email" Text="maxwickhammonro@gmail.com" FontSize="Small"/>
+            <Button x:Name="LogOut" Text="{x:Static resx:Strings.LogOut}" Clicked="LogOut_Clicked"/>
+            <Label Text="{x:Static resx:Strings.Info}"/>
+            
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
