@@ -9,28 +9,44 @@ namespace FarmData.Data
     {
         public static List<Comment> CommentList = new List<Comment>();
 
-        public static bool UpdateComments(int ThreadID)
+        public static bool UpdateComments(Thread thread)
         {
+            CommentList = new List<Comment>();
+            for(int i = 0; i < 6; i++)
+            {
+                Comment comment = new Comment("max" + i.ToString(), null, "once upon a time there was a boy named harry", DateTime.Now);
+                CommentList.Add(comment);
+            }
+            
             //TODO update the comment list for a given thread
+            return true;
+        }
+
+        public static bool SendComment(Comment comment, Thread thread)
+        {
+            CommentList.Add(comment);
             return true;
         }
     }
     class Comment
     {
-        int ID;
-        int ThreadID;
-        string UserName;
-        List<Image> Photo;
-        string Description;
-        DateTime CreationDate;
-        Comment(int id, int threadID, string userName, List<Image> photo, string description, DateTime creationDate)
+       // public int ID { get; set; }
+        //public int ThreadID { get; set; }
+        public string UserName { get; set; }
+        public string PhotoSource { get; set; }
+        public string Description { get; set; }
+        public DateTime CreationDate { get; set; }
+        public Comment(string userName, string photo, string description, DateTime creationDate)
         {
-            ID = id;
-            ThreadID = threadID;
             UserName = userName;
-            Photo = photo;
+            PhotoSource = photo;
             Description = description;
             CreationDate = creationDate;
+        }
+        public Comment(string photo, string description)
+        {
+            PhotoSource = photo;
+            Description = description;
         }
 
     }

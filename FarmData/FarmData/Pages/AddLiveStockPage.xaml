@@ -3,21 +3,25 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:FarmData.Resources"
              mc:Ignorable="d"
-             x:Class="FarmData.Pages.ForumPage">
+             x:Class="FarmData.Pages.AddLiveStockPage">
     <ContentPage.Content>
-        <StackLayout>
-            <ScrollView>
+        <ScrollView>
             <StackLayout>
                 <Grid>
-                    <StackLayout x:Name="View"></StackLayout>
+                    <StackLayout x:Name="View">
+                        <Picker x:Name="LiveStockPicker"/>
+                        <Entry x:Name="OtherEntry"/>
+                        <Picker x:Name="SizePicker"/>
+                    </StackLayout>
                 </Grid>
                 <Grid>
-                    <StackLayout x:Name="View2"></StackLayout>
+                    <StackLayout x:Name="View2">
+                        <Button x:Name="Save" Text="{x:Static resx:Strings.Save}" Clicked="Save_Clicked"/>
+                    </StackLayout>
                 </Grid>
             </StackLayout>
         </ScrollView>
-            <StackLayout x:Name="View3"></StackLayout>
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

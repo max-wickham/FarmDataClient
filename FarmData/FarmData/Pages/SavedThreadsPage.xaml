@@ -6,10 +6,9 @@
              mc:Ignorable="d"
              x:Class="FarmData.Pages.SavedThreadsPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout x:Name="View">
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -4,20 +4,23 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="FarmData.Pages.ForumPage">
+             x:Class="FarmData.Pages.AddCropPage">
     <ContentPage.Content>
-        <StackLayout>
-            <ScrollView>
+        <ScrollView>
             <StackLayout>
                 <Grid>
-                    <StackLayout x:Name="View"></StackLayout>
+                    <StackLayout x:Name="View">
+                        <Picker x:Name="CropPicker"/>
+                        <Entry x:Name="OtherEntry"/>
+                        <Picker x:Name="SizePicker"/>
+                    </StackLayout>
                 </Grid>
                 <Grid>
-                    <StackLayout x:Name="View2"></StackLayout>
+                    <StackLayout x:Name="View2">
+                        <Button x:Name="Save" Text="{x:Static resx:Strings.Save}" Clicked="Save_Clicked"/>
+                    </StackLayout>
                 </Grid>
             </StackLayout>
         </ScrollView>
-            <StackLayout x:Name="View3"></StackLayout>
-        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

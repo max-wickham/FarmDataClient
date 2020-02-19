@@ -15,6 +15,13 @@ namespace FarmData.Pages
         public HomePage()
         {
             InitializeComponent();
+            Profile.Clicked += Profile_Clicked;
+        }
+
+
+        private void Profile_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new ProfilePage());
         }
     }
 }

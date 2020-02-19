@@ -24,6 +24,10 @@ namespace FarmData.ModelsUI
     {
         Frame Render();
     }
+
+    /// <summary>
+    /// HEllo
+    /// </summary>
     public class CropReportUI : ReportUI<CropReportUI>
     {
         //the ui elements 
@@ -33,7 +37,7 @@ namespace FarmData.ModelsUI
         Label disease = new Label();
         Label warning = new Label();
         Button description = new Button();
-        bool descriptionHidden;
+        bool descriptionHidden = true;
 
         //properties
         public string CropType;
@@ -42,7 +46,6 @@ namespace FarmData.ModelsUI
         public Color WarningColour;
         public string Description;
 
-        //setup
         public CropReportUI(CropStruct cropStruct)
         {
             CropType = cropStruct.CropType;
@@ -104,8 +107,8 @@ namespace FarmData.ModelsUI
         //toggles the hidding of the description
         private void Description_Clicked(object sender, EventArgs e)
         {
-            description.Text = descriptionHidden? Description: Strings.Description;
             descriptionHidden = !descriptionHidden;
+            description.Text = descriptionHidden? Description: Strings.Description;
         }
     }
 

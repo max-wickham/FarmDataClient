@@ -7,12 +7,14 @@
              mc:Ignorable="d"
              x:Class="FarmData.Pages.ProfilePage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label x:Name="UserName" Text="Max"/>
-            <Label x:Name="Email" Text="maxwickhammonro@gmail.com" FontSize="Small"/>
-            <Button x:Name="LogOut" Text="{x:Static resx:Strings.LogOut}" Clicked="LogOut_Clicked"/>
-            <Label Text="{x:Static resx:Strings.Info}"/>
-            
-        </StackLayout>
+        <ScrollView>
+            <StackLayout x:Name="View">
+                <Label x:Name="UserName" Text="Max"/>
+                <Label x:Name="Email" Text="maxwickhammonro@gmail.com" FontSize="Small"/>
+                <Button x:Name="LogOut" Text="{x:Static resx:Strings.LogOut}" Clicked="LogOut_Clicked"/>
+                <Label Text="{x:Static resx:Strings.Info}"/>
+                <Button x:Name="AddProfile" Text="{x:Static resx:Strings.AddProfile}" Clicked="AddProfile_Clicked"/>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

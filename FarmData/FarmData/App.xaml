@@ -90,6 +90,22 @@
                 <Setter Property="CornerRadius" Value="0"/>
                 <Setter Property="BackgroundColor" Value="Gray"/>
             </Style>
+            <Style x:Key="ProfileFrameName" TargetType="Label">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="ProfileFrameSize" TargetType="Label">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="ProfileFrameProblem" TargetType="Label">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
+            <Style x:Key="ProfileFrameRemove" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Gray"/>
+                <Setter Property="TextColor" Value="Black"/>
+            </Style>
 
 
         </ResourceDictionary>

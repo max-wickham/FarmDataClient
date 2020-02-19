@@ -5,12 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:resx="clr-namespace:FarmData.Resources"
              mc:Ignorable="d"
-             x:Class="FarmData.Pages.LogBookPage">
+             x:Class="FarmData.Pages.AddFarmInfoPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout x:Name="View">
-                <Button x:Name="AddLog" Text="{x:Static resx:Strings.AddLog}" Clicked="AddLog_Clicked"/>
-            </StackLayout>
-        </ScrollView>
+        <StackLayout x:Name="View">
+            <Button x:Name="AddLiveStock" Text="{x:Static resx:Strings.LiveStock}" Clicked="AddLiveStock_Clicked"/>
+            <Button x:Name="AddCrop" Text="{x:Static resx:Strings.Crop}" Clicked="AddCrop_Clicked"/>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

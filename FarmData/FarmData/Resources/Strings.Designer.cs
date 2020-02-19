@@ -61,6 +61,51 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Image.
+        /// </summary>
+        public static string AddImage {
+            get {
+                return ResourceManager.GetString("AddImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add LogBook Entry.
+        /// </summary>
+        public static string AddLog {
+            get {
+                return ResourceManager.GetString("AddLog", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add profile information.
+        /// </summary>
+        public static string AddProfile {
+            get {
+                return ResourceManager.GetString("AddProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel.
+        /// </summary>
+        public static string Cancel {
+            get {
+                return ResourceManager.GetString("Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crop.
+        /// </summary>
+        public static string Crop {
+            get {
+                return ResourceManager.GetString("Crop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crops.
         /// </summary>
         public static string Crops {
@@ -115,11 +160,38 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Forum.
+        /// </summary>
+        public static string Forum {
+            get {
+                return ResourceManager.GetString("Forum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Info.
         /// </summary>
         public static string Info {
             get {
                 return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to LiveStock.
+        /// </summary>
+        public static string LiveStock {
+            get {
+                return ResourceManager.GetString("LiveStock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Log.
+        /// </summary>
+        public static string Log {
+            get {
+                return ResourceManager.GetString("Log", resourceCulture);
             }
         }
         
@@ -147,6 +219,15 @@ namespace FarmData.Resources {
         public static string LogOut {
             get {
                 return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to New Post.
+        /// </summary>
+        public static string MakeNewThread {
+            get {
+                return ResourceManager.GetString("MakeNewThread", resourceCulture);
             }
         }
         
@@ -187,6 +268,15 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Profile.
+        /// </summary>
+        public static string Profile {
+            get {
+                return ResourceManager.GetString("Profile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Register.
         /// </summary>
         public static string RegisterButton {
@@ -223,6 +313,15 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report.
+        /// </summary>
+        public static string Report {
+            get {
+                return ResourceManager.GetString("Report", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string Save {
@@ -232,11 +331,56 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Saved Posts.
+        /// </summary>
+        public static string SavedPosts {
+            get {
+                return ResourceManager.GetString("SavedPosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saved Threads.
+        /// </summary>
+        public static string SavedThreads {
+            get {
+                return ResourceManager.GetString("SavedThreads", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sqaure km.
+        /// </summary>
+        public static string Squarekm {
+            get {
+                return ResourceManager.GetString("Squarekm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to login.
         /// </summary>
         public static string UnableToLogin {
             get {
                 return ResourceManager.GetString("UnableToLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsave.
+        /// </summary>
+        public static string Unsave {
+            get {
+                return ResourceManager.GetString("Unsave", resourceCulture);
             }
         }
         

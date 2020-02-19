@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddImage" xml:space="preserve">
+    <value>Add Image</value>
+  </data>
+  <data name="AddLog" xml:space="preserve">
+    <value>Add LogBook Entry</value>
+  </data>
+  <data name="AddProfile" xml:space="preserve">
+    <value>Add profile information</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Crop" xml:space="preserve">
+    <value>Crop</value>
+  </data>
   <data name="Crops" xml:space="preserve">
     <value>Crops</value>
   </data>
@@ -135,8 +150,17 @@
   <data name="ErrorLoading" xml:space="preserve">
     <value>Error Loading</value>
   </data>
+  <data name="Forum" xml:space="preserve">
+    <value>Forum</value>
+  </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
+  </data>
+  <data name="LiveStock" xml:space="preserve">
+    <value>LiveStock</value>
+  </data>
+  <data name="Log" xml:space="preserve">
+    <value>Log</value>
   </data>
   <data name="LoginAlert" xml:space="preserve">
     <value>Email password combination is incorrect</value>
@@ -146,6 +170,9 @@
   </data>
   <data name="LogOut" xml:space="preserve">
     <value>Log out</value>
+  </data>
+  <data name="MakeNewThread" xml:space="preserve">
+    <value>New Post</value>
   </data>
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
@@ -159,6 +186,9 @@
   <data name="PasswordMismatch" xml:space="preserve">
     <value>Passwords fields must be the same</value>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+  </data>
   <data name="RegisterButton" xml:space="preserve">
     <value>Register</value>
   </data>
@@ -171,11 +201,29 @@
   <data name="RePasswordEntry" xml:space="preserve">
     <value>Re-enter password</value>
   </data>
+  <data name="Report" xml:space="preserve">
+    <value>Report</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
   </data>
+  <data name="SavedPosts" xml:space="preserve">
+    <value>Saved Posts</value>
+  </data>
+  <data name="SavedThreads" xml:space="preserve">
+    <value>Saved Threads</value>
+  </data>
+  <data name="Squarekm" xml:space="preserve">
+    <value>Sqaure km</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
   <data name="UnableToLogin" xml:space="preserve">
     <value>Unable to login</value>
+  </data>
+  <data name="Unsave" xml:space="preserve">
+    <value>Unsave</value>
   </data>
   <data name="UserNameEntry" xml:space="preserve">
     <value>User Name</value>

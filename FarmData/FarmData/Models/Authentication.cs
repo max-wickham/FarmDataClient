@@ -10,36 +10,39 @@ namespace FarmData.Models
     {
         //when the application runs the user should be autologged in 
         //using the last username and password and the session key should be stored 
-        public static string email;
-        public static string password;
+        public static string Email { get; set; }
+        public static string Password { get; set; }
+        public static string UserName { get; set; }
 
         public const int minPasswordLength = 6;
         public const int maxPasswordLength = 15;
         public static  int LogIn(string email, string password)
         {
-            Authentication.email = email;
-            Authentication.password = password;
+            Authentication.Email = email;
+            Authentication.Password = password;
             SaveEmailPassword(email, password);
             //TODO return the SessionKey
             return 0;
         }
         public static void SaveEmailPassword(string email, string password)
         {
-            Authentication.email = email;
-            Authentication.password = password;
+            Authentication.Email = email;
+            Authentication.Password = password;
             Application.Current.Properties["email"] = email;
             Application.Current.Properties["password"] = password;
         }
         public static string GetEmail()
-        {
-            email = Application.Current.Properties["email"] as string;
-            return email;
+        { 
+            try { Email = Application.Current.Properties["email"] as string; }            
+            catch { Email = ""; }   
+            return Email;
         }
 
         public static string GetPassword()
         {
-            password =  Application.Current.Properties["password"] as string;
-            return password;
+            try { Password = Application.Current.Properties["password"] as string; }
+            catch { Password = ""; }
+            return Password;
         }
 
         public static bool UserNameAvailable(string username)
@@ -59,6 +62,10 @@ namespace FarmData.Models
             return true;
         }
 
+        public static bool LogOut()
+        {
+            return true;
+        }
 
     }
 }

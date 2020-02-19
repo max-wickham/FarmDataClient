@@ -6,10 +6,32 @@
              mc:Ignorable="d"
              x:Class="FarmData.Pages.ThreadPage">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout>
+                <Grid>
+                    <StackLayout x:Name="View">
+                    </StackLayout>
+                </Grid>
+                <Grid x:Name="EntryGrid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="addImage" Text="Add Image" Grid.Row="1" Grid.Column="1"></Button>
+                    <Entry x:Name="entry" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="4"></Entry>
+                    <Button x:Name="send" Text="Send" Grid.Row="1" Grid.Column="6" Clicked="Send_Clicked"></Button>
+                </Grid>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SaveButton"/>
+    </ContentPage.ToolbarItems>
 </ContentPage>
