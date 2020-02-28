@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\FarmData",
+    "\\FarmData\\FarmData",
+    "\\FarmData\\FarmData\\FarmData",
+    "\\FarmData\\FarmData\\FarmData\\Data",
+    "\\FarmData\\FarmData\\FarmData\\Pages"
+  ],
+  "SelectedNode": "\\FarmData\\FarmData\\FarmData\\Pages\\AddFarmInfoPage.xaml.cs",
+  "PreviewInSolutionExplorer": false
+}
