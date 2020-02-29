@@ -2,7 +2,6 @@
 using FarmData.Models;
 using FarmData.Resources;
 using FarmData.UIModels;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,57 +16,31 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ThreadPage : ContentPage
     {
-        int id;
         Thread thread;
         
-        public ThreadPage(int id)
+        public ThreadPage(Thread _thread)
         {
             InitializeComponent();
-            this.id = id;
-            setup();
+            thread = _thread;
+            SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
+            SaveButton.Clicked += SaveButton_Clicked;
 
-        }
-        async void setup()
-        {
-            string response = await Threads.GetThread(id);
-            try
+            if (Comments.UpdateComments(thread))
             {
-                if (response != "error")
-                {
-                    Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
-                    thread = new Thread(values["title"], values["user"], null, values["description"], DateTime.Now, 0, id);
-
-                    SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
-                    SaveButton.Clicked += SaveButton_Clicked;
-
-                    if (Comments.UpdateComments(thread))
-                    {
-                        RenderPage(thread);
-                    }
-                    else
-                    {
-                        error();
-                    }
-                }
-                else { error(); }
+                RenderPage(thread);
             }
-            catch
+            else
             {
-                error();
+                Button reload = new Button();
+                reload.Text = Strings.Reload;
+                reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
+                reload.Clicked += Reload_Clicked;
+                Label errorMessage = new Label();
+                errorMessage.Text = Strings.ErrorLoading;
+                errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+                View.Children.Add(errorMessage);
+                View.Children.Add(reload);
             }
-        }
-
-        void error()
-        {
-            Button reload = new Button();
-            reload.Text = Strings.Reload;
-            reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
-            reload.Clicked += Reload_Clicked;
-            Label errorMessage = new Label();
-            errorMessage.Text = Strings.ErrorLoading;
-            errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
-            View.Children.Add(errorMessage);
-            View.Children.Add(reload);
         }
 
         private void SaveButton_Clicked(object sender, EventArgs e)

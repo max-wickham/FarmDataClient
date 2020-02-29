@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:FarmData.Resources"
+             xmlns:local="clr-namespace:FarmData.Pages"
+             mc:Ignorable="d"
+             x:Class="FarmData.Pages.HomePage">
+    
+    <TabbedPage.Children>
+        <local:ReportPage Title="{x:Static resx:Strings.Report}"/>
+        <local:ForumPage Title="{x:Static resx:Strings.Forum}"/>
+        <local:LogBookPage Title="{x:Static resx:Strings.Log}"/>
+        <local:SavedThreadsPage Title="{x:Static resx:Strings.SavedPosts}"/>
+        <local:TestPage Title="Test"/>
+    </TabbedPage.Children>
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem x:Name="Profile" Order="Primary" Text="{x:Static resx:Strings.Profile}" Priority="0"/>
+    </TabbedPage.ToolbarItems>
+</TabbedPage>

@@ -4,13 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="FarmData.MainPage">
-
-    <StackLayout>
-        <!-- Place new controls here -->
-        <Label Text="Loading" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
-
+             x:Class="FarmData.Pages.ReportPage">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="View"
+                         Margin="12"
+                         ></StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
 </ContentPage>

@@ -1,32 +1,69 @@
-﻿using System;
+﻿using FarmData.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FarmData.Data
 {
     class Threads
     {
-        static Thread thread1 = new Thread("hello", "max", null, "description", DateTime.Now, 5);
+        //static Thread thread1 = new Thread("hello", "max", null, "description", DateTime.Now, 5);
         public static List<Thread> ThreadList = new List<Thread>();
 
         public static List<Thread> SavedThreads = new List<Thread>();
 
-        public static bool UpdateThreads()
+        public static async Task<bool> UpdateThreads()
         {
-            ThreadList = new List<Thread>();
-            ThreadList.Add(thread1);
-            ThreadList.Add(thread1);
-            ThreadList.Add(thread1);
-            ThreadList.Add(thread1);
-            ThreadList.Add(thread1);
-            ThreadList.Add(thread1);
-            return true;
+            try
+            {
+                ThreadList = new List<Thread>();
+                string response = await Request.Get("/getthreadlist", Authentication.Email, Authentication.Password);
+                if (response == "invalid" || response == "Unauthorized Access" || response == "")
+                {
+                    return false;
+                }
+                else
+                {
+                    Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
+                    foreach (var val in values)
+                    { 
+                        Thread thread = new Thread(val.Value["title"], val.Value["description"], null, val.Value["username"], DateTime.Now,0, Int32.Parse(val.Key));
+                        ThreadList.Add(thread);
+                    }
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public static async Task<bool> PostNewThread(string title, string description)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data["title"] = title;
+            data["description"] = description;
+            string response = await Request.Post("/getcreatethread", data, Authentication.Email, Authentication.Password);
+            if(response != "invalid"){
+                return true;
+            }
+            return false;
+        }
+
+        public static async Task<string> GetThread(int id)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data["thread_id"] = id.ToString();
+            string response = await Request.Post("/getthread", data, Authentication.Email, Authentication.Password);
+            return response;
         }
         public static bool UpdateSavedThreadList()
         {
             SavedThreads = new List<Thread>();
-            SavedThreads.Add(thread1);
+            //SavedThreads.Add(thread1);
             return true;
         }
         public static bool SaveNewThread(Thread thread)
@@ -70,9 +107,9 @@ namespace FarmData.Data
         public string Description { get; set; }
         public DateTime CreationDate { get; set; }
         public int CommentCount { get; set; }
-        public Thread(string title, string userName, string photoSource, string description, DateTime creationDate, int commentCount)
+        public Thread(string title, string userName, string photoSource, string description, DateTime creationDate, int commentCount, int id)
         {
-            //ID = id;
+            ID = id;
             Title = title;
             UserName = userName;
             PhotoSource = photoSource;

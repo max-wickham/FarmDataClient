@@ -18,20 +18,17 @@ namespace FarmData
         public MainPage()
         {
             InitializeComponent();
-            LogIn();
-        }
-
-        async void LogIn()
-        {
-            bool loggedin = false;
-            loggedin = await Authentication.LogIn(Authentication.GetEmail(), Authentication.GetPassword());
-            if (!loggedin)
+            //TODO recall email
+            //TODO recall password
+            //TODO generate clientID
+            SessionData.sessionKey = Authentication.LogIn(Authentication.GetEmail(), Authentication.GetPassword());
+            if (SessionData.sessionKey == 0)
             {
-                await Navigation.PushAsync(new LoginPage());
+                Navigation.PushAsync(new LoginPage());
             }
             else
             {
-                await Navigation.PushAsync(new HomePage());
+                Navigation.PushAsync(new Pages.HomePage());
             }
         }
     }

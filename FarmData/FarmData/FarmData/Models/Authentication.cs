@@ -21,9 +21,7 @@ namespace FarmData.Models
 
             Dictionary<String, String> data = new Dictionary<String, String>()
             {
-                {"username",email},
                 {"password",password}
-
             };
             string response = await Request.Post("/login", data, email, password);
             if (response == "logged in") {
@@ -63,7 +61,7 @@ namespace FarmData.Models
             };
             string response = await Request.Post("/usernameavailable", data);
             if (response == "available") { return true; }
-            if(response == "unavailable") { return false; } 
+            //if(response == "unavailable") { return false; } 
             return false;
         }
         public static async Task<bool> EmailAvailable(string email)
@@ -74,7 +72,7 @@ namespace FarmData.Models
             };
             string response = await Request.Post("/emailavailable", data);
             if (response == "available") { return true; }
-            if (response == "unavailable") { return false; }
+            //if (response == "unavailable") { return false; }
             return false;
         }
 

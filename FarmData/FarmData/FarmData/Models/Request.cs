@@ -14,13 +14,17 @@ namespace FarmData.Models
         public static async Task<String> Post(string page = "", Dictionary<String, String> data =  null, string username = "", string password = "")
         {
             try
-            {
+            {           
                 string responseString = "";
                 using (var client = new HttpClient())
                 {
-                    string auth_address = username + ":" + password + "@" + address;
+                    client.Timeout = TimeSpan.FromSeconds(10);
+                    var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                    //string auth_address = username + ":" + password + "@" + address;
                     var content = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("http://" + auth_address + page, content);
+                    var response = await client.PostAsync("http://" + address + page, content);
                     responseString = await response.Content.ReadAsStringAsync();
                 }
                 return responseString;
@@ -32,7 +36,23 @@ namespace FarmData.Models
             }
         }
 
-        public static string jsonify(Dictionary<String,String> data)
+        public static async Task<String> Get(string page = "", string username = "", string password = "")
+        {
+            string responseString = "";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = TimeSpan.FromSeconds(10);
+                var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                //string auth_address = username + ":" + password + "@" + address;         
+                var response = await client.GetAsync("http://" + address + page);
+                responseString = await response.Content.ReadAsStringAsync();
+            }
+            return responseString;
+        }
+
+        public static string jsonify(Dictionary<String, String> data)
         {
             string response = "{";
             foreach (KeyValuePair<string, string> item in data)
@@ -42,9 +62,18 @@ namespace FarmData.Models
                 response += ("\"" + item.Value + "\"");
                 response += ",";
             }
-            response = response.Remove(response.Length - 1, 1);
+            if (response != "{") { response = response.Remove(response.Length - 1, 1); }
             response += "}";
             return response;
         }
     }
+
+
+    /*int timeout = 1000;
+var task = SomeOperationAsync();
+if (await Task.WhenAny(task, Task.Delay(timeout)) == task) {
+    // task completed within timeout
+} else { 
+    // timeout logic
+}*/
 }

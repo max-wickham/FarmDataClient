@@ -202,7 +202,7 @@ namespace FarmData.UIModels
 
         private void View_Clicked(object sender, EventArgs e)
         {
-            App.Current.MainPage.Navigation.PushAsync(new ThreadPage(thread.ID));
+            App.Current.MainPage.Navigation.PushAsync(new ThreadPage(thread));
         }
     }
 }

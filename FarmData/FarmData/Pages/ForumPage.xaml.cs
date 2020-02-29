@@ -1,8 +1,6 @@
 ﻿using FarmData.Data;
-using FarmData.Models;
 using FarmData.Resources;
 using FarmData.UIModels;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +25,10 @@ namespace FarmData.Pages
             //TestList = new List<String>() { "1", "2", "3", "4", "5" };
             //listView.ItemTemplate = new DataTemplate(typeof(Cell));
             //listView.ItemsSource = FrameList;
-            setup();
-       
-        }
-        async void setup()
-        {
-            if (await Threads.UpdateThreads())
+            
+            
+            
+            if (Threads.UpdateThreads())
             {
                 RenderPage();
             }
@@ -50,13 +46,9 @@ namespace FarmData.Pages
             }
         }
 
-        private async void Reload_Clicked(object sender, EventArgs e)
+        private void Reload_Clicked(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new HomePage());
-            string response = await Request.Get("/getthreadlist", Authentication.Email, Authentication.Password);
-            Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string,string>>>(response);
-
-            await DisplayAlert("Alert", values.Values.GetType().ToString(), "OK");
+            Navigation.PushAsync(new HomePage());
         }
 
         void RenderPage()
