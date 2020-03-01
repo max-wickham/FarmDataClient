@@ -5,6 +5,7 @@ using FarmData.UIModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ namespace FarmData.Pages
     {
         int id;
         Thread thread;
-        
+        //public IList<Comment> CommentList { get; private set; }
+        public ObservableCollection<Comment> CommentList { get; private set; } 
         public ThreadPage(int id)
         {
             InitializeComponent();
@@ -40,7 +42,7 @@ namespace FarmData.Pages
                     SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
                     SaveButton.Clicked += SaveButton_Clicked;
 
-                    if (Comments.UpdateComments(thread))
+                    if (await Comments.UpdateComments(id))
                     {
                         RenderPage(thread);
                     }
@@ -66,6 +68,7 @@ namespace FarmData.Pages
             Label errorMessage = new Label();
             errorMessage.Text = Strings.ErrorLoading;
             errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+            View.Children.Clear();
             View.Children.Add(errorMessage);
             View.Children.Add(reload);
         }
@@ -86,10 +89,13 @@ namespace FarmData.Pages
 
         void RenderPage(Thread thread)
         {
-            ThreadUI threadUI = new ThreadUI(thread);
-            Frame ThreadFrame = threadUI.ThreadCommentFrame();
-            View.Children.Add(ThreadFrame);
-            foreach(Comment comment in Comments.CommentList)
+            ThreadUserLabel.Text = thread.UserName;
+            ThreadTitleLabel.Text = thread.Title;
+            ThreadDescriptionLabel.Text = thread.Description;
+
+            CommentList = Comments.CommentList;
+            BindingContext = this;
+            /*foreach(Comment comment in Comments.CommentList)
             {
                 CommentUI commentUI = new CommentUI(comment);
                 Frame commentFrame = commentUI.CommentFrame();
@@ -98,18 +104,20 @@ namespace FarmData.Pages
 
             EntryGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
             EntryGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6, GridUnitType.Auto) });
-
+            */
 
 
         }
 
-        private void Send_Clicked(object sender, EventArgs e)
+        private async void Send_Clicked(object sender, EventArgs e)
         {
-            Comment comment = new Comment("", entry.Text);
-            if(Comments.SendComment(comment, thread))
+            send.IsEnabled = false;
+            Comment comment = new Comment(Authentication.Email, entry.Text);
+            if(await Comments.SendComment(comment, id))
             {
-                //need to set binding for scroll view ////////todo
+                CommentList = Comments.CommentList;
             }
+            send.IsEnabled = true;
 
         }
 

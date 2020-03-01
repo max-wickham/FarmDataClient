@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -11,15 +12,15 @@ namespace FarmData.Data
     class Threads
     {
         //static Thread thread1 = new Thread("hello", "max", null, "description", DateTime.Now, 5);
-        public static List<Thread> ThreadList = new List<Thread>();
-
-        public static List<Thread> SavedThreads = new List<Thread>();
-
+        //public static List<Thread> ThreadList = new List<Thread>();
+        public static ObservableCollection<Thread> ThreadList = new ObservableCollection<Thread>();
+        //public static List<Thread> SavedThreads = new List<Thread>();
+        public static ObservableCollection<Thread> SavedThreads = new ObservableCollection<Thread>();
         public static async Task<bool> UpdateThreads()
         {
             try
             {
-                ThreadList = new List<Thread>();
+                ThreadList = new ObservableCollection<Thread>();
                 string response = await Request.Get("/getthreadlist", Authentication.Email, Authentication.Password);
                 if (response == "invalid" || response == "Unauthorized Access" || response == "")
                 {
@@ -30,7 +31,7 @@ namespace FarmData.Data
                     Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
                     foreach (var val in values)
                     { 
-                        Thread thread = new Thread(val.Value["title"], val.Value["description"], null, val.Value["username"], DateTime.Now,0, Int32.Parse(val.Key));
+                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], DateTime.Now,0, Int32.Parse(val.Key));
                         ThreadList.Add(thread);
                     }
                     return true;
@@ -47,12 +48,8 @@ namespace FarmData.Data
             data["title"] = title;
             data["description"] = description;
             string response = await Request.Post("/getcreatethread", data, Authentication.Email, Authentication.Password);
-            if(response != "invalid"){
-                return true;
-            }
-            return false;
+            return response == "posted";
         }
-
         public static async Task<string> GetThread(int id)
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
@@ -60,9 +57,11 @@ namespace FarmData.Data
             string response = await Request.Post("/getthread", data, Authentication.Email, Authentication.Password);
             return response;
         }
+
+
         public static bool UpdateSavedThreadList()
         {
-            SavedThreads = new List<Thread>();
+            SavedThreads = new ObservableCollection<Thread>();
             //SavedThreads.Add(thread1);
             return true;
         }
@@ -75,8 +74,7 @@ namespace FarmData.Data
              UpdateSavedThreadList();
             return true;
         }
-
-        public static List<Thread> SearchThreads(string search)
+        public static ObservableCollection<Thread> SearchThreads(string search)
         {
             //if(search == "")
            // {
@@ -84,7 +82,6 @@ namespace FarmData.Data
             //}
            // return new List<Thread>();
         }
-
         public static bool IsSaved(Thread thread)
         {
             foreach (Thread savedThread in SavedThreads)

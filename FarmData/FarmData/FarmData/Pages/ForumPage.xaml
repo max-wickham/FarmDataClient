@@ -3,21 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:FarmData.Resources"
              mc:Ignorable="d"
              x:Class="FarmData.Pages.ForumPage">
     <ContentPage.Content>
-        <StackLayout>
-            <ScrollView>
-            <StackLayout>
-                <Grid>
-                    <StackLayout x:Name="View"></StackLayout>
-                </Grid>
-                <Grid>
-                    <StackLayout x:Name="View2"></StackLayout>
-                </Grid>
-            </StackLayout>
-        </ScrollView>
-            <StackLayout x:Name="View3"></StackLayout>
+        <StackLayout x:Name="View">
+            <SearchBar></SearchBar>
+            <Button x:Name="MakeNewThread" Clicked="MakeNewThread_Clicked"
+                            Text="{x:Static resx:Strings.MakeNewThread}"></Button>
+            <ListView x:Name="ThreadListView"
+                              ItemsSource="{Binding ThreadList}"
+                              ItemTapped="ThreadListView_ItemTapped"
+                              HasUnevenRows="true"
+                              RowHeight="125">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Grid.Row="1" Text="{Binding UserName}"/>
+                                <Label Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding Title}"/>
+                                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
+                                               Grid.RowSpan="2" Text="{Binding Description}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

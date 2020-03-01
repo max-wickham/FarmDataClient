@@ -5,6 +5,7 @@ using FarmData.UIModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,16 +18,11 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForumPage : ContentPage
     {
-        //public List<String> TestList { get; set; }
-        //public List<Frame> FrameList { get; set; }
+        //public IList<Thread> ThreadList { get; private set; }
+        public ObservableCollection<Thread> ThreadList { get; private set; }
         public ForumPage()
         {
             InitializeComponent();
-
-            //FrameList = new List<Frame>();
-            //TestList = new List<String>() { "1", "2", "3", "4", "5" };
-            //listView.ItemTemplate = new DataTemplate(typeof(Cell));
-            //listView.ItemsSource = FrameList;
             setup();
        
         }
@@ -45,6 +41,7 @@ namespace FarmData.Pages
                 Label errorMessage = new Label();
                 errorMessage.Text = Strings.ErrorLoading;
                 errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+                View.Children.Clear();
                 View.Children.Add(errorMessage);
                 View.Children.Add(reload);
             }
@@ -52,16 +49,14 @@ namespace FarmData.Pages
 
         private async void Reload_Clicked(object sender, EventArgs e)
         {
-            //Navigation.PushAsync(new HomePage());
-            string response = await Request.Get("/getthreadlist", Authentication.Email, Authentication.Password);
-            Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string,string>>>(response);
-
-            await DisplayAlert("Alert", values.Values.GetType().ToString(), "OK");
+            await Navigation.PushAsync(new HomePage());
         }
 
         void RenderPage()
         {
-            View.Children.Clear();
+            ThreadList = Threads.ThreadList;
+            BindingContext = this;
+           /* View.Children.Clear();
             View2.Children.Clear();
             View3.Children.Clear();
             SearchBar search = new SearchBar();
@@ -80,23 +75,23 @@ namespace FarmData.Pages
             {
                 ThreadUI threadUI = new ThreadUI(thread);
                 View2.Children.Add(threadUI.ThreadFrame());
-            }
+            }*/
 
         }
 
         private void Search_SearchButtonPressed(object sender, EventArgs e)
         {
-            View2.Children.Clear();
+            //View2.Children.Clear();
         }
 
         private void Search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SearchBar search = (SearchBar)sender;
-            View2.Children.Clear();
-            foreach(Thread thread in Threads.SearchThreads(search.Text)){
-                ThreadUI threadUI = new ThreadUI(thread);
-                View2.Children.Add(threadUI.ThreadFrame());
-            }
+            //SearchBar search = (SearchBar)sender;
+            //View2.Children.Clear();
+            //foreach(Thread thread in Threads.SearchThreads(search.Text)){
+            //    ThreadUI threadUI = new ThreadUI(thread);
+            //   View2.Children.Add(threadUI.ThreadFrame());
+            //}
         }
 
         private void SavedThreads_Clicked(object sender, EventArgs e)
@@ -107,22 +102,14 @@ namespace FarmData.Pages
         private void MakeNewThread_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new MakeThreadPage());
+            //DisplayAlert("Alert", ThreadList.Count().ToString(), "OK");
         }
-    
-        public class Cell : ViewCell
+
+        private void ThreadListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //public static readonly BindableProperty FrameProperty =
-            //    BindableProperty.Create("frame", typeof(Frame), typeof(Cell));
-            
-            public Cell()
-            {
-                var frameProperty = new Frame().Content;
-                frameProperty.SetBinding(Frame.ContentProperty, "frame");
-                var frame = new Frame();
-                frame.Content = frameProperty;
-                View = frame;
-            }
+            Thread thread = e.Item as Thread;
+            Navigation.PushAsync(new ThreadPage(thread.ID));
         }
-    
+
     }
 }
