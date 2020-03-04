@@ -21,11 +21,18 @@ namespace FarmData.Pages
             InitializeComponent();
         }
 
-        private void SaveButton_Clicked(object sender, EventArgs e)
+        private async void SaveButton_Clicked(object sender, EventArgs e)
         {
-            Thread thread = new Thread(TitleEntry.Text,Authentication.Email, photoSource, DescriptionEntry.Text,DateTime.Now,0);
-            Threads.SaveNewThread(thread);
-            Navigation.PushAsync(new HomePage());
+            SaveButton.IsEnabled = false;
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            data["title"] = TitleEntry.Text;
+            data["description"] = DescriptionEntry.Text;
+            Thread thread = new Thread(TitleEntry.Text,Authentication.Email, photoSource, DescriptionEntry.Text,DateTime.Now,0,0);
+            if(await Threads.PostNewThread(TitleEntry.Text, DescriptionEntry.Text))
+            {
+                await Navigation.PushAsync(new HomePage());
+            }
+            SaveButton.IsEnabled = true;
         }
 
         async void ImageButton_Clicked(object sender, EventArgs e)

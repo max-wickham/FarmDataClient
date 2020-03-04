@@ -19,18 +19,17 @@ namespace FarmData.Pages
             InitializeComponent();
         }
 
-        private void LogInButton_Clicked(object sender, EventArgs e)
+        private async void LogInButton_Clicked(object sender, EventArgs e)
         {
-            int key = Authentication.LogIn(EmailEntry.Text, PasswordEntry.Text);//request a session key 
-            SessionData.sessionKey = key;
-            //if (key == 0)
-            //{
-            //    DisplayAlert(Strings.Ok, Strings.LoginAlert, Strings.Ok);//if returned session key is 0, unable to login, display warning
-            //}
-            //else
-            //{
-                Navigation.PushAsync(new Pages.HomePage());//load tabbed page
-            //}
+            bool loggedin = await Authentication.LogIn(EmailEntry.Text, PasswordEntry.Text);//request a session key 
+            if (!loggedin)
+            {
+                await DisplayAlert(Strings.Error, Strings.LoginAlert, Strings.Ok);//if returned session key is 0, unable to login, display warning
+            }
+            else
+            {
+                await Navigation.PushAsync(new Pages.HomePage());//load tabbed page
+            }
         }
 
         private void RegisterButton_Clicked(object sender, EventArgs e)

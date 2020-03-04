@@ -1,8 +1,11 @@
 ﻿using FarmData.Data;
+using FarmData.Models;
 using FarmData.Resources;
 using FarmData.UIModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,22 +18,20 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ForumPage : ContentPage
     {
-        //public List<String> TestList { get; set; }
-        //public List<Frame> FrameList { get; set; }
+        //public IList<Thread> ThreadList { get; private set; }
+        public ObservableCollection<Thread> ThreadList { get; private set; }
         public ForumPage()
         {
             InitializeComponent();
-
-            //FrameList = new List<Frame>();
-            //TestList = new List<String>() { "1", "2", "3", "4", "5" };
-            //listView.ItemTemplate = new DataTemplate(typeof(Cell));
-            //listView.ItemsSource = FrameList;
-            
-            
-            
-            if (Threads.UpdateThreads())
+            setup();
+       
+        }
+        async void setup()
+        {
+            if (await Threads.UpdateThreads())
             {
-                RenderPage();
+                ThreadList = Threads.ThreadList;
+                BindingContext = this;
             }
             else
             {
@@ -41,54 +42,25 @@ namespace FarmData.Pages
                 Label errorMessage = new Label();
                 errorMessage.Text = Strings.ErrorLoading;
                 errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+                View.Children.Clear();
                 View.Children.Add(errorMessage);
                 View.Children.Add(reload);
             }
         }
 
-        private void Reload_Clicked(object sender, EventArgs e)
+        private async void Reload_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HomePage());
-        }
-
-        void RenderPage()
-        {
-            View.Children.Clear();
-            View2.Children.Clear();
-            View3.Children.Clear();
-            SearchBar search = new SearchBar();
-            search.TextChanged += Search_TextChanged;
-            search.SearchButtonPressed += Search_SearchButtonPressed;
-            View.Children.Add(search);
-            Button MakeNewThread = new Button();
-            MakeNewThread.Text = Strings.MakeNewThread;
-            MakeNewThread.Clicked += MakeNewThread_Clicked;
-            View3.Children.Add(MakeNewThread);
-            Button SavedThreads = new Button();
-            SavedThreads.Text = Strings.SavedThreads;
-            SavedThreads.Clicked += SavedThreads_Clicked;
-            View.Children.Add(SavedThreads);
-            foreach (Thread thread in Threads.ThreadList)
-            {
-                ThreadUI threadUI = new ThreadUI(thread);
-                View2.Children.Add(threadUI.ThreadFrame());
-            }
-
+            await Navigation.PushAsync(new HomePage());
         }
 
         private void Search_SearchButtonPressed(object sender, EventArgs e)
         {
-            View2.Children.Clear();
+            //View2.Children.Clear();
         }
 
         private void Search_TextChanged(object sender, TextChangedEventArgs e)
         {
-            SearchBar search = (SearchBar)sender;
-            View2.Children.Clear();
-            foreach(Thread thread in Threads.SearchThreads(search.Text)){
-                ThreadUI threadUI = new ThreadUI(thread);
-                View2.Children.Add(threadUI.ThreadFrame());
-            }
+
         }
 
         private void SavedThreads_Clicked(object sender, EventArgs e)
@@ -96,25 +68,18 @@ namespace FarmData.Pages
             Navigation.PushAsync(new SavedThreadsPage());
         }
 
-        private void MakeNewThread_Clicked(object sender, EventArgs e)
+        private async void MakeNewThread_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new MakeThreadPage());
+            string response = await Request.Get("/getsaves", Authentication.Email, Authentication.Password);
+            await DisplayAlert("Alert", response, "OK");
+            //Navigation.PushAsync(new MakeThreadPage());
         }
-    
-        public class Cell : ViewCell
+
+        private void ThreadListView_ItemTapped(object sender, ItemTappedEventArgs e)
         {
-            //public static readonly BindableProperty FrameProperty =
-            //    BindableProperty.Create("frame", typeof(Frame), typeof(Cell));
-            
-            public Cell()
-            {
-                var frameProperty = new Frame().Content;
-                frameProperty.SetBinding(Frame.ContentProperty, "frame");
-                var frame = new Frame();
-                frame.Content = frameProperty;
-                View = frame;
-            }
+            Thread thread = e.Item as Thread;
+            Navigation.PushAsync(new ThreadPage(thread.ID));
         }
-    
+
     }
 }

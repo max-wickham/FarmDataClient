@@ -3,16 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resx="clr-namespace:FarmData.Resources"
              mc:Ignorable="d"
              x:Class="FarmData.Pages.ThreadPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout>
-                <Grid>
-                    <StackLayout x:Name="View">
-                    </StackLayout>
-                </Grid>
-                <Grid x:Name="EntryGrid">
+        <StackLayout x:Name="View">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="ThreadUserLabel" Grid.Column="1" Grid.Row="1"/>
+                <Label x:Name="ThreadTitleLabel" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="3"/>
+                <Label x:Name="ThreadDescriptionLabel" Grid.Column="1"
+                       Grid.Row="2" Grid.ColumnSpan="4" Grid.RowSpan="2"/>
+            </Grid>
+            <ListView x:Name="CommentListView"
+                              ItemsSource="{Binding CommentList}"                              
+                              HasUnevenRows="true"
+                              RowHeight="125">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Grid.Row="1" Text="{Binding UserName}"/>
+                                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="4"
+                                               Grid.RowSpan="2" Text="{Binding Description}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Grid x:Name="EntryGrid" VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
@@ -26,10 +66,10 @@
                     </Grid.ColumnDefinitions>
                     <Button x:Name="addImage" Text="Add Image" Grid.Row="1" Grid.Column="1"></Button>
                     <Entry x:Name="entry" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="4"></Entry>
-                    <Button x:Name="send" Text="Send" Grid.Row="1" Grid.Column="6" Clicked="Send_Clicked"></Button>
+                    <Button x:Name="send" Text="Send" Grid.Row="1" 
+                            Grid.Column="6" Clicked="Send_Clicked"></Button>
                 </Grid>
-            </StackLayout>
-        </ScrollView>
+        </StackLayout>
     </ContentPage.Content>
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="SaveButton"/>

@@ -16,13 +16,21 @@ namespace FarmData.Models
 
         public const int minPasswordLength = 6;
         public const int maxPasswordLength = 15;
-        public static  int LogIn(string email, string password)
+        public static async Task<bool> LogIn(string email, string password)
         {
-            Authentication.Email = email;
-            Authentication.Password = password;
-            SaveEmailPassword(email, password);
-            //TODO return the SessionKey
-            return 0;
+
+            Dictionary<String, String> data = new Dictionary<String, String>()
+            {
+                {"password",password}
+            };
+            string response = await Request.Post("/login", data, email, password);
+            if (response == "logged in") {
+                Authentication.Email = email;
+                Authentication.Password = password;
+                SaveEmailPassword(email, password);
+                return true; 
+            }
+            return false;
         }
         public static void SaveEmailPassword(string email, string password)
         {
@@ -37,35 +45,52 @@ namespace FarmData.Models
             catch { Email = ""; }   
             return Email;
         }
-
         public static string GetPassword()
         {
             try { Password = Application.Current.Properties["password"] as string; }
             catch { Password = ""; }
             return Password;
         }
-
-        public static bool UserNameAvailable(string username)
+        public static async Task<bool> UserNameAvailable(string username)
         {
-            //TODO
-            return true;
+            Dictionary<String,String> data = new Dictionary<String, String>()
+            {
+                {"username",username }
+            };
+            string response = await Request.Post("/usernameavailable", data);
+            if (response == "available") { return true; }
+            //if(response == "unavailable") { return false; } 
+            return false;
         }
-        public static bool EmailAvailable(string email)
+        public static async Task<bool> EmailAvailable(string email)
         {
-            //TODO
-            return true;
+            Dictionary<String, String> data = new Dictionary<String, String>()
+            {
+                {"email",email }
+            };
+            string response = await Request.Post("/emailavailable", data);
+            if (response == "available") { return true; }
+            //if (response == "unavailable") { return false; }
+            return false;
         }
-
-        public static bool Register(string email, string password, string username)
+        public static async Task<bool> Register(string email, string password, string username)
         {
-            //TODO return true if registration successful
-            return true;
+            Dictionary<String, String> data = new Dictionary<String, String>()
+            {
+                {"username", username },
+                {"password", password },
+                {"email",email }
+            };
+            string response = await Request.Post("/register", data);
+            if (response == "added user") { return true; }
+            return false;
         }
-
         public static bool LogOut()
         {
             return true;
         }
+
+        public static async void AuthenticationError() { }
 
     }
 }

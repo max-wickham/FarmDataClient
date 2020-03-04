@@ -2,8 +2,10 @@
 using FarmData.Models;
 using FarmData.Resources;
 using FarmData.UIModels;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,40 +18,69 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ThreadPage : ContentPage
     {
+        int id;
         Thread thread;
-        
-        public ThreadPage(Thread _thread)
+        //public IList<Comment> CommentList { get; private set; }
+        public ObservableCollection<Comment> CommentList { get; private set; } 
+        public ThreadPage(int id)
         {
             InitializeComponent();
-            thread = _thread;
-            SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
-            SaveButton.Clicked += SaveButton_Clicked;
+            this.id = id;
+            setup();
 
-            if (Comments.UpdateComments(thread))
+        }
+        async void setup()
+        {
+            string response = await Threads.GetThread(id);
+            try
             {
-                RenderPage(thread);
+                if (response != "error")
+                {
+                    Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
+                    thread = new Thread(values["title"], values["user"], null, values["description"], DateTime.Now, 0, id);
+
+                    SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
+                    SaveButton.Clicked += SaveButton_Clicked;
+
+                    if (await Comments.UpdateComments(id))
+                    {
+                        RenderPage(thread);
+                    }
+                    else
+                    {
+                        error();
+                    }
+                }
+                else { error(); }
             }
-            else
+            catch
             {
-                Button reload = new Button();
-                reload.Text = Strings.Reload;
-                reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
-                reload.Clicked += Reload_Clicked;
-                Label errorMessage = new Label();
-                errorMessage.Text = Strings.ErrorLoading;
-                errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
-                View.Children.Add(errorMessage);
-                View.Children.Add(reload);
+                error();
             }
         }
 
-        private void SaveButton_Clicked(object sender, EventArgs e)
+        void error()
         {
-            ToolbarItem button = sender as ToolbarItem;
-            if (Threads.IsSaved(thread)) { Threads.RemoveSavedThread(thread); }
-            else {Threads.SaveNewThread(thread); }
-            SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
+            Button reload = new Button();
+            reload.Text = Strings.Reload;
+            reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
+            reload.Clicked += Reload_Clicked;
+            Label errorMessage = new Label();
+            errorMessage.Text = Strings.ErrorLoading;
+            errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+            View.Children.Clear();
+            View.Children.Add(errorMessage);
+            View.Children.Add(reload);
+        }
 
+        private async void SaveButton_Clicked(object sender, EventArgs e)
+        {
+            SaveButton.IsEnabled = false;
+            ToolbarItem button = sender as ToolbarItem;
+            if (Threads.IsSaved(thread)) { await Threads.RemoveSavedThread(thread); }
+            else {await Threads.SaveNewThread(thread); }
+            SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
+            SaveButton.IsEnabled = true;
         }
 
         private void Reload_Clicked(object sender, EventArgs e)
@@ -59,30 +90,30 @@ namespace FarmData.Pages
 
         void RenderPage(Thread thread)
         {
-            ThreadUI threadUI = new ThreadUI(thread);
-            Frame ThreadFrame = threadUI.ThreadCommentFrame();
-            View.Children.Add(ThreadFrame);
-            foreach(Comment comment in Comments.CommentList)
+            ThreadUserLabel.Text = thread.UserName;
+            ThreadTitleLabel.Text = thread.Title;
+            ThreadDescriptionLabel.Text = thread.Description;
+
+            CommentList = Comments.CommentList;
+            BindingContext = this;
+
+
+            Device.StartTimer(TimeSpan.FromSeconds(5), () =>
             {
-                CommentUI commentUI = new CommentUI(comment);
-                Frame commentFrame = commentUI.CommentFrame();
-                View.Children.Add(commentFrame);
-            }
-
-            EntryGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Auto) });
-            EntryGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(6, GridUnitType.Auto) });
-
-
-
+                Device.BeginInvokeOnMainThread(() => Comments.UpdateComments(id));
+                return true;
+            });
         }
 
-        private void Send_Clicked(object sender, EventArgs e)
+        private async void Send_Clicked(object sender, EventArgs e)
         {
-            Comment comment = new Comment("", entry.Text);
-            if(Comments.SendComment(comment, thread))
+            send.IsEnabled = false;
+            Comment comment = new Comment(Authentication.Email, entry.Text);
+            if(await Comments.SendComment(comment, id))
             {
-                //need to set binding for scroll view ////////todo
+                CommentList = Comments.CommentList;
             }
+            send.IsEnabled = true;
 
         }
 

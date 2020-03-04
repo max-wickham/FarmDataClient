@@ -1,34 +1,61 @@
-﻿using System;
+﻿using FarmData.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Text;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace FarmData.Data
 {
     class Comments
     {
-        public static List<Comment> CommentList = new List<Comment>();
+        //public static List<Comment> CommentList = new List<Comment>();
+        public static ObservableCollection<Comment> CommentList = new ObservableCollection<Comment>();
 
-        public static bool UpdateComments(Thread thread)
+        public static async Task<bool> UpdateComments(int thread_id)
         {
-            CommentList = new List<Comment>();
-            for(int i = 0; i < 6; i++)
+            //CommentList = new List<Comment>();
+            CommentList = new ObservableCollection<Comment>();
+            Dictionary<String, String> data = new Dictionary<String, String>()
             {
-                Comment comment = new Comment("max" + i.ToString(), null, "once upon a time there was a boy named harry", DateTime.Now);
-                CommentList.Add(comment);
+                {"thread_id",thread_id.ToString()}
+            };
+            string response = await Request.Post("/getcomments",data, Authentication.Email, Authentication.Password);
+            if (response == "")
+            {
+                return false;
             }
-            
-            //TODO update the comment list for a given thread
-            return true;
+            else
+            {
+                Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
+                foreach (var val in values)
+                {
+                    Comment comment = new Comment(val.Value["username"], null, val.Value["description"], DateTime.Now);
+                    CommentList.Add(comment);
+                }
+                return true;
+            }
         }
 
-        public static bool SendComment(Comment comment, Thread thread)
+        public static async Task<bool> SendComment(Comment comment, int thread_id)
         {
-            CommentList.Add(comment);
-            return true;
+            Dictionary<String, String> data = new Dictionary<String, String>()
+            {
+                {"thread_id",thread_id.ToString()},
+                {"description",comment.Description}
+            };
+            string response = await Request.Post("/getcreatecomment", data, Authentication.Email, Authentication.Password);
+            if (response == "posted")
+            {
+                CommentList.Add(comment);
+                return true;
+            }
+            return false;
         }
     }
-    class Comment
+    public class Comment
     {
        // public int ID { get; set; }
         //public int ThreadID { get; set; }
@@ -43,9 +70,9 @@ namespace FarmData.Data
             Description = description;
             CreationDate = creationDate;
         }
-        public Comment(string photo, string description)
+        public Comment(string username, string description)
         {
-            PhotoSource = photo;
+            UserName = username;
             Description = description;
         }
 

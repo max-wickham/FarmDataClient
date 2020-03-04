@@ -1,4 +1,5 @@
-﻿using Plugin.Media;
+﻿using FarmData.Models;
+using Plugin.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,18 +18,17 @@ namespace FarmData.Pages
         public TestPage()
         {
             InitializeComponent();
-            Map map = new Map();
-            Stack.Children.Add(map);
         }
 
         async void Photopick_Clicked(object sender, EventArgs e)
         {
-            if (CrossMedia.Current.IsPickPhotoSupported)
+            var dic = new Dictionary<string, string>()
             {
-                var photo = await CrossMedia.Current.PickPhotoAsync();
-                var ImagePath = photo.Path;
-                Image.Source = ImagePath;
-            }
+                { "username","max" }
+            };
+            string response = await Request.Post(entry.Text,dic);
+
+            await DisplayAlert("Alert", response, "OK");
         }
 
     }

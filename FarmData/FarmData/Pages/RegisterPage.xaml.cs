@@ -19,34 +19,40 @@ namespace FarmData.Pages
             InitializeComponent();
         }
 
-        private void RegisterButton_Clicked(object sender, EventArgs e)
+        private async void RegisterButton_Clicked(object sender, EventArgs e)
         {
             //check valid username
-            if (!Authentication.UserNameAvailable(UserNameEntry.Text))
+            if (!(await Authentication.UserNameAvailable(UserNameEntry.Text)))
             {
-                DisplayAlert(Strings.Error, Strings.UserNameTaken, Strings.Ok);
+                await DisplayAlert(Strings.Error, Strings.UserNameTaken, Strings.Ok);
                 return;
             }
             //check valid password
-            if (!Authentication.EmailAvailable(EmailEntry.Text))
+            if (!(await Authentication.EmailAvailable(EmailEntry.Text)))
             {
-                DisplayAlert(Strings.Error, Strings.EmailTaken, Strings.Ok);
+                await DisplayAlert(Strings.Error, Strings.EmailTaken, Strings.Ok);
                 return;
             }
             //check passwords match
             if(PasswordEntry.Text != RePasswordEntry.Text)
             {
-                DisplayAlert(Strings.Error, Strings.PasswordMismatch, Strings.Ok);
+                await DisplayAlert(Strings.Error, Strings.PasswordMismatch, Strings.Ok);
                 return;
             }
             //check password length
             if(PasswordEntry.Text.Length < Authentication.minPasswordLength || PasswordEntry.Text.Length > Authentication.maxPasswordLength)
             {
-                DisplayAlert(Strings.Error, Strings.PasswordLength, Strings.Ok);
+                await DisplayAlert(Strings.Error, Strings.PasswordLength, Strings.Ok);
                 return;
             }
-            Authentication.Register(EmailEntry.Text, PasswordEntry.Text, UserNameEntry.Text);
-            Navigation.PushAsync(new LoginPage());
+            if(await Authentication.Register(EmailEntry.Text, PasswordEntry.Text, UserNameEntry.Text))
+            {
+                await Navigation.PushAsync(new LoginPage());
+            }
+            else
+            {
+                await DisplayAlert(Strings.Error, Strings.Error, Strings.Ok);
+            }
         }
     }
 }

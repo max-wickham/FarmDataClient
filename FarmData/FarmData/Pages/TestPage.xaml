@@ -10,8 +10,8 @@
             <Label Text="Test Page"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
-            <Image x:Name="Image"></Image>
             <Button x:Name="Photopick" Clicked="Photopick_Clicked"/>
+            <Entry x:Name="entry"></Entry>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
