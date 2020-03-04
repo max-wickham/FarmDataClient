@@ -3,13 +3,71 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:FarmData.Pages"
              mc:Ignorable="d"
              x:Class="FarmData.Pages.ReportPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="cropTemplate">
+                <ViewCell>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Type}"/>
+                        <Label Grid.Column="1" Grid.Row="2" Text="{Binding Disease}"/>
+                        <Label Grid.Column="2" Grid.Row="3" Text="{Binding Warning}" 
+                               TextColor="Black"/>
+                        <Label Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" 
+                               Grid.RowSpan="2" Text="{Binding Description}"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="weatherTemplate">
+                <ViewCell>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Type}" TextColor="Black"/>
+                        <Label Grid.Column="2" Grid.Row="2" Text="{Binding Warning}" 
+                               TextColor="{Binding WarningColour}"/>
+                        <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" 
+                               Grid.RowSpan="2" Text="{Binding Description}"/>
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+            
+            <local:ReportDataTemplateSelector x:Key="reportDataTemplateSelector"
+                CropTemplate="{StaticResource cropTemplate}"
+                WeatherTemplate="{StaticResource weatherTemplate}" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout x:Name="View"
-                         Margin="12"
-                         ></StackLayout>
+    
+    <ScrollView>
+            <StackLayout x:Name="View" Margin="12">
+                <ListView x:Name="ReportListView"
+                              ItemsSource="{Binding ReportList}"
+                              ItemTemplate="{StaticResource reportDataTemplateSelector}"
+                              HasUnevenRows="true"
+                              RowHeight="125"
+                              ItemSelected="ReportListView_ItemSelected">
+                </ListView>
+            </StackLayout>
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

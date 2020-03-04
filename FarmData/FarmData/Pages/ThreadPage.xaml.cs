@@ -98,11 +98,11 @@ namespace FarmData.Pages
             BindingContext = this;
 
 
-            Device.StartTimer(TimeSpan.FromSeconds(5), () =>
-            {
-                Device.BeginInvokeOnMainThread(() => Comments.UpdateComments(id));
-                return true;
-            });
+            //Device.StartTimer(TimeSpan.FromSeconds(5), () =>
+            //{
+            //    Device.BeginInvokeOnMainThread(() => Comments.UpdateComments(id));
+            //    return true;
+            //});
         }
 
         private async void Send_Clicked(object sender, EventArgs e)

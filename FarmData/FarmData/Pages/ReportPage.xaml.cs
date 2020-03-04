@@ -4,6 +4,7 @@ using FarmData.ModelsUI;
 using FarmData.Resources;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,11 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ReportPage : ContentPage
     {
+        public ObservableCollection<Report> ReportList { get; private set; }
         public ReportPage()
         {
             InitializeComponent();
+            
             if (Reports.UpdateReports())
             {
                 RenderPage();
@@ -44,7 +47,10 @@ namespace FarmData.Pages
 
         void RenderPage()
         {
-            StackLayout view = View;
+            ReportList = Reports.ReportList;
+            //ReportListView.ItemsSource = ReportList;
+            BindingContext = this;
+            /*StackLayout view = View;
             view.Children.Clear();
             Label cropLabel = new Label();
             cropLabel.Text = Strings.Crops;
@@ -54,18 +60,37 @@ namespace FarmData.Pages
             weatherLabel.Style = (Style)Application.Current.Resources["ReportHeaderLabel"];
 
             view.Children.Add(ReportUI.createLabelFrame(cropLabel));
-            foreach (CropStruct cropReport in Reports.cropReportsList)
+            foreach (Crop cropReport in Reports.cropReportsList)
             {
-                CropReportUI cropReportUI = new CropReportUI(cropReport);
-                view.Children.Add(cropReportUI.Render());
+             //   CropReportUI cropReportUI = new CropReportUI(cropReport);
+             //   view.Children.Add(cropReportUI.Render());
             }
 
             view.Children.Add(ReportUI.createLabelFrame(weatherLabel));
-            foreach (WeatherStruct weatherReport in Reports.weatherReportsList)
+            foreach (Weather weatherReport in Reports.weatherReportsList)
             {
-                WeatherReportUI weatherReportUi = new WeatherReportUI(weatherReport);
-                view.Children.Add(weatherReportUi.Render());
+             //   WeatherReportUI weatherReportUi = new WeatherReportUI(weatherReport);
+             //   view.Children.Add(weatherReportUi.Render());
             }
+        */
+        }
+
+        private void ReportListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            //(e.SelectedItem as Report).Type
+            DisplayAlert("Alert", (e.SelectedItem).GetType().ToString(), "OK"); 
+        }
+    }
+
+    public class ReportDataTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate CropTemplate { get; set; }
+        public DataTemplate WeatherTemplate { get; set; }
+
+        protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
+        {
+
+            return item.GetType() == typeof(Crop) ? CropTemplate : WeatherTemplate;
         }
     }
 }

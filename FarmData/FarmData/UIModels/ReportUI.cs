@@ -8,7 +8,7 @@ using Xamarin.Forms;
 namespace FarmData.ModelsUI
 {
     
-    public class ReportUI
+    /*public class ReportUI
     {
         public static Frame createLabelFrame(View item)
         {
@@ -23,12 +23,12 @@ namespace FarmData.ModelsUI
     interface ReportUI<T>
     {
         Frame Render();
-    }
+    }*/
 
     /// <summary>
     /// HEllo
     /// </summary>
-    public class CropReportUI : ReportUI<CropReportUI>
+    /*public class CropReportUI : ReportUI<CropReportUI>
     {
         //the ui elements 
         Frame frame = new Frame();
@@ -48,7 +48,7 @@ namespace FarmData.ModelsUI
 
         public CropReportUI(CropStruct cropStruct)
         {
-            CropType = cropStruct.CropType;
+            CropType = cropStruct.Type;
             DiseaseType = cropStruct.Disease;
             WarningLevel = cropStruct.Warning;
             WarningColour = cropStruct.WarningColour;
@@ -129,7 +129,7 @@ namespace FarmData.ModelsUI
 
         public WeatherReportUI(WeatherStruct weatherStruct)
         {
-            WeatherType = weatherStruct.WeatherType;
+            WeatherType = weatherStruct.Type;
             WarningLevel = weatherStruct.Warning;
             WarningColour = weatherStruct.WarningColour;
             Description = weatherStruct.Description;
@@ -183,5 +183,5 @@ namespace FarmData.ModelsUI
             description.Text = descriptionHidden ? Description : Strings.Description;
             descriptionHidden = !descriptionHidden;
         }
-    }
+   }*/
 }

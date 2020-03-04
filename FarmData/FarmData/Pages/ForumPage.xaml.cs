@@ -70,9 +70,9 @@ namespace FarmData.Pages
 
         private async void MakeNewThread_Clicked(object sender, EventArgs e)
         {
-            string response = await Request.Get("/getsaves", Authentication.Email, Authentication.Password);
-            await DisplayAlert("Alert", response, "OK");
-            //Navigation.PushAsync(new MakeThreadPage());
+            //string response = await Request.Get("/getsaves", Authentication.Email, Authentication.Password);
+            //await DisplayAlert("Alert", response, "OK");
+            await Navigation.PushAsync(new MakeThreadPage());
         }
 
         private void ThreadListView_ItemTapped(object sender, ItemTappedEventArgs e)
