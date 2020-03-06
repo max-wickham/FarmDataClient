@@ -50,7 +50,9 @@ namespace FarmData.Pages
 
         private async void Reload_Clicked(object sender, EventArgs e)
         {
-            await Navigation.PushAsync(new HomePage());
+
+            //await Navigation.PushAsync(new HomePage());
+            await DisplayAlert("Alert", Threads.errorString, "OK");
         }
 
         private void Search_SearchButtonPressed(object sender, EventArgs e)

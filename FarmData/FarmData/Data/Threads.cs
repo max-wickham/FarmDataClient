@@ -11,6 +11,7 @@ namespace FarmData.Data
 {
     class Threads
     {
+        public static string errorString = "hello";
         //static Thread thread1 = new Thread("hello", "max", null, "description", DateTime.Now, 5);
         //public static List<Thread> ThreadList = new List<Thread>();
         public static ObservableCollection<Thread> ThreadList = new ObservableCollection<Thread>();
@@ -44,6 +45,7 @@ namespace FarmData.Data
             }
             catch
             {
+                errorString = "fail";
                 return false;
             }
         }

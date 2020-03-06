@@ -3,6 +3,7 @@ using FarmData.Resources;
 using FarmData.UIModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LogBookPage : ContentPage
     {
+        public ObservableCollection<Log> LogList { get; private set; }
         public LogBookPage()
         {
             InitializeComponent();
@@ -43,12 +45,8 @@ namespace FarmData.Pages
 
         public void RenderPage()
         {
-            foreach(Log log in LogBook.LogList)
-            {
-                LogUI logUI = new LogUI(log);
-                Frame frame = logUI.LogFrame();
-                View.Children.Add(frame);
-            }
+            LogList = LogBook.LogList;
+            BindingContext = this;
         }
 
         private void AddLog_Clicked(object sender, EventArgs e)

@@ -22,13 +22,14 @@ namespace FarmData.Pages
 
         async void Photopick_Clicked(object sender, EventArgs e)
         {
-            var dic = new Dictionary<string, string>()
+            string photoSource = null;
+            if (CrossMedia.Current.IsPickPhotoSupported)
             {
-                { "username","max" }
-            };
-            string response = await Request.Post(entry.Text,dic);
+                var photo = await CrossMedia.Current.PickPhotoAsync();
+                photoSource = photo.Path;
+            }
 
-            await DisplayAlert("Alert", response, "OK");
+            byte[] fileBytes;
         }
 
     }

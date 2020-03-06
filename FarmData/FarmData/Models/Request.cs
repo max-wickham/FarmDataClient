@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace FarmData.Models
 {
-    
+
     public class Request
     {
         public static string address = "129.31.159.50:5000";
 
-        public static async Task<String> Post(string page = "", Dictionary<String, String> data =  null, string username = "", string password = "")
+        public static async Task<String> Post(string page = "", Dictionary<String, String> data = null, string username = "", string password = "")
         {
             try
-            {           
+            {
                 string responseString = "";
                 using (var client = new HttpClient())
                 {

@@ -7,10 +7,36 @@
              mc:Ignorable="d"
              x:Class="FarmData.Pages.LogBookPage">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout x:Name="View">
-                <Button x:Name="AddLog" Text="{x:Static resx:Strings.AddLog}" Clicked="AddLog_Clicked"/>
-            </StackLayout>
-        </ScrollView>
+        <StackLayout x:Name="View">
+            <Button x:Name="AddLog" Text="{x:Static resx:Strings.AddLog}" Clicked="AddLog_Clicked"/>
+            <ListView x:Name="LogListView"
+                              ItemsSource="{Binding LogList}"
+                              HasUnevenRows="true"
+                              RowHeight="125">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <Label Grid.Column="1" Grid.Row="1" Text="{Binding Title}"/>
+                                <Label Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding Problem}"/>
+                                <Label Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="3" Text="{Binding Date}"/>
+                                <Label Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2"
+                                               Grid.RowSpan="1" Text="{Binding Description}"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

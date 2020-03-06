@@ -3,6 +3,7 @@ using FarmData.Models;
 using FarmData.UIModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +16,13 @@ namespace FarmData.Pages
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ProfilePage : ContentPage
     {
+        public ObservableCollection<FarmInfo> FarmInfoList {get; set;}
         public ProfilePage()
         {
             InitializeComponent();
-            Profile.UpdateFarmProfile();
+            RenderPage();
         }
+        
 
         private void LogOut_Clicked(object sender, EventArgs e)
         {
@@ -34,14 +37,22 @@ namespace FarmData.Pages
             Navigation.PushAsync(new AddFarmInfoPage());
         }
 
-        public void RenderPage()
+        public async void RenderPage()
         {
-            foreach(FarmInfo info in Data.Profile.FarmProfile)
+            if (await Profile.UpdateFarmProfile())
             {
-                ProfileUI profileUI = new ProfileUI(info);
-                Frame frame = profileUI.CreateProfileFrame();
-                View.Children.Add(frame);
+                BindingContext = this;
+                FarmInfoList = Profile.FarmProfile;
             }
+            else
+            {
+                error();
+            }
+
+        }
+        public void error()
+        {
+            //needs implementing
         }
     }
 }

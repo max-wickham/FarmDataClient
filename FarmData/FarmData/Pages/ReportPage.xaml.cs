@@ -21,8 +21,12 @@ namespace FarmData.Pages
         public ReportPage()
         {
             InitializeComponent();
+            setup();
             
-            if (Reports.UpdateReports())
+        }
+        async void setup()
+        {
+            if (await Reports.UpdateReports())
             {
                 RenderPage();
             }
@@ -48,37 +52,13 @@ namespace FarmData.Pages
         void RenderPage()
         {
             ReportList = Reports.ReportList;
-            //ReportListView.ItemsSource = ReportList;
             BindingContext = this;
-            /*StackLayout view = View;
-            view.Children.Clear();
-            Label cropLabel = new Label();
-            cropLabel.Text = Strings.Crops;
-            cropLabel.Style = (Style)Application.Current.Resources["ReportHeaderLabel"];
-            Label weatherLabel = new Label();
-            weatherLabel.Text = Strings.Weather;
-            weatherLabel.Style = (Style)Application.Current.Resources["ReportHeaderLabel"];
-
-            view.Children.Add(ReportUI.createLabelFrame(cropLabel));
-            foreach (Crop cropReport in Reports.cropReportsList)
-            {
-             //   CropReportUI cropReportUI = new CropReportUI(cropReport);
-             //   view.Children.Add(cropReportUI.Render());
-            }
-
-            view.Children.Add(ReportUI.createLabelFrame(weatherLabel));
-            foreach (Weather weatherReport in Reports.weatherReportsList)
-            {
-             //   WeatherReportUI weatherReportUi = new WeatherReportUI(weatherReport);
-             //   view.Children.Add(weatherReportUi.Render());
-            }
-        */
         }
 
         private void ReportListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             //(e.SelectedItem as Report).Type
-            DisplayAlert("Alert", (e.SelectedItem).GetType().ToString(), "OK"); 
+           // DisplayAlert("Alert", (e.SelectedItem).GetType().ToString(), "OK"); 
         }
     }
 
