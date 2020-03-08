@@ -45,7 +45,7 @@ namespace FarmData.Data
         //public static List<Crop> cropReportsList = new List<Crop>();
         //public static List<Weather> weatherReportsList = new List<Weather>();
         public static ObservableCollection<Report> ReportList = new ObservableCollection<Report>();
-
+        private static HTTPHandler handler = new HTTPHandler();
         public static async Task<bool> UpdateReports()
         {
             ReportList.Add(new Crop("Corn2", "Aphid", "High Risk", "Based on public data in area and weather data"));
@@ -53,15 +53,19 @@ namespace FarmData.Data
             {
                 ReportList = new ObservableCollection<Report>();
                 //string response = "";
-                string response = await Request.Get("/getreport", Authentication.Email, Authentication.Password);
+                string response = await new Request(handler).Get("/getreport", Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
                     return false;
                 }
-                if (response == "invalid" || response == "")//this needs to be made simpler
+                if (response == "invalid")//this needs to be made simpler
                 {
                     return false;
+                }
+                if(response == "empty")
+                {
+                    return true;
                 }
                 else
                 {

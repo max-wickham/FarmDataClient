@@ -44,9 +44,11 @@ namespace FarmData.Pages
             }
         }
 
-        private void Reload_Clicked(object sender, EventArgs e)
+        private async void Reload_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new HomePage());
+            //string response = await Request.Get("/getreport", Authentication.Email, Authentication.Password);
+            //DisplayAlert("Alert", response, "OK");
+            //Navigation.PushAsync(new HomePage());
         }
 
         void RenderPage()

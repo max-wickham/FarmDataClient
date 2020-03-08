@@ -1,4 +1,5 @@
 ﻿using FarmData.Data;
+using FarmData.Models;
 using FarmData.Resources;
 using FarmData.UIModels;
 using System;
@@ -17,32 +18,34 @@ namespace FarmData.Pages
     public partial class SavedThreadsPage : ContentPage
     {
         //public IList<Thread> ThreadList { get; private set; }
-        public ObservableCollection<Thread> SavedThreadsList { get; private set; }
+        public ObservableCollection<Thread> SavedThreadsList { get; set; }
         public SavedThreadsPage()
         {
             InitializeComponent();
             setup();
-
+            
         }
         async void setup()
         {
+            
             if (await Threads.UpdateSavedThreadList())
             {
                 SavedThreadsList = Threads.SavedThreads;
+
                 BindingContext = this;
             }
             else
             {
-                Button reload = new Button();
-                reload.Text = Strings.Reload;
-                reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
-                reload.Clicked += Reload_Clicked;
-                Label errorMessage = new Label();
-                errorMessage.Text = Strings.ErrorLoading;
-                errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
-                View.Children.Clear();
-                View.Children.Add(errorMessage);
-                View.Children.Add(reload);
+                    Button reload = new Button();
+                    reload.Text = Strings.Reload;
+                    reload.Style = (Style)Application.Current.Resources["PrimaryButtonStyle"];
+                    reload.Clicked += Reload_Clicked;
+                    Label errorMessage = new Label();
+                    errorMessage.Text = Strings.ErrorLoading;
+                    errorMessage.Style = (Style)Application.Current.Resources["PrimaryLabelStyle"];
+                    View.Children.Clear();
+                    View.Children.Add(errorMessage);
+                    View.Children.Add(reload);
             }
         }
 

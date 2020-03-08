@@ -1,4 +1,5 @@
 ﻿using FarmData.Models;
+using FarmData.Pages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,14 @@ namespace FarmData.Data
         public static ObservableCollection<Thread> ThreadList = new ObservableCollection<Thread>();
         //public static List<Thread> SavedThreads = new List<Thread>();
         public static ObservableCollection<Thread> SavedThreads = new ObservableCollection<Thread>();
+
+        private static HTTPHandler handler = new HTTPHandler();
         public static async Task<bool> UpdateThreads()
         {
             try
             {
                 ThreadList = new ObservableCollection<Thread>();
-                string response = await Request.Get("/getthreadlist", Authentication.Email, Authentication.Password);
+                string response = await new Request(handler).Get("/getthreadlist", Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -54,7 +57,7 @@ namespace FarmData.Data
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["title"] = title;
             data["description"] = description;
-            string response = await Request.Post("/getcreatethread", data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getcreatethread", data, Authentication.Email, Authentication.Password);
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -66,7 +69,7 @@ namespace FarmData.Data
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = id.ToString();
-            string response = await Request.Post("/getthread", data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getthread", data, Authentication.Email, Authentication.Password);
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -81,7 +84,7 @@ namespace FarmData.Data
             try
             {
                 SavedThreads = new ObservableCollection<Thread>();
-                string response = await Request.Get("/getsaves", Authentication.Email, Authentication.Password);
+                string response = await new Request(handler).Get("/getsaves", Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -111,7 +114,7 @@ namespace FarmData.Data
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = thread.ID.ToString();
-            string response = await Request.Post("/getsavethread", data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getsavethread", data, Authentication.Email, Authentication.Password);
             if(response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -126,7 +129,7 @@ namespace FarmData.Data
         public static async Task<bool> RemoveSavedThread(Thread thread){
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = thread.ID.ToString();
-            string response = await Request.Post("/getunsavethread", data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getunsavethread", data, Authentication.Email, Authentication.Password);
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();

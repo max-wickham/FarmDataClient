@@ -11,6 +11,7 @@ namespace FarmData.Data
 {
     class Comments
     {
+        private static HTTPHandler handler = new HTTPHandler();
         //public static List<Comment> CommentList = new List<Comment>();
         public static ObservableCollection<Comment> CommentList = new ObservableCollection<Comment>();
 
@@ -22,7 +23,7 @@ namespace FarmData.Data
             {
                 {"thread_id",thread_id.ToString()}
             };
-            string response = await Request.Post("/getcomments",data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getcomments",data, Authentication.Email, Authentication.Password);
             if (response == "")
             {
                 return false;
@@ -46,7 +47,7 @@ namespace FarmData.Data
                 {"thread_id",thread_id.ToString()},
                 {"description",comment.Description}
             };
-            string response = await Request.Post("/getcreatecomment", data, Authentication.Email, Authentication.Password);
+            string response = await new Request(handler).Post("/getcreatecomment", data, Authentication.Email, Authentication.Password);
             if (response == "posted")
             {
                 CommentList.Add(comment);

@@ -19,19 +19,19 @@ namespace FarmData.Pages
     public partial class ForumPage : ContentPage
     {
         //public IList<Thread> ThreadList { get; private set; }
-        public ObservableCollection<Thread> ThreadList { get; private set; }
+        public ObservableCollection<Thread> ThreadList { get; set; }
         public ForumPage()
         {
             InitializeComponent();
             setup();
-       
         }
         async void setup()
         {
-            if (await Threads.UpdateThreads())
+            Task<bool> cont = Threads.UpdateThreads();
+            if (await cont)
             {
                 ThreadList = Threads.ThreadList;
-                BindingContext = this;
+               BindingContext = this;
             }
             else
             {
@@ -51,8 +51,8 @@ namespace FarmData.Pages
         private async void Reload_Clicked(object sender, EventArgs e)
         {
 
-            //await Navigation.PushAsync(new HomePage());
-            await DisplayAlert("Alert", Threads.errorString, "OK");
+            await Navigation.PushAsync(new HomePage());
+            //await DisplayAlert("Alert", Threads.errorString, "OK");
         }
 
         private void Search_SearchButtonPressed(object sender, EventArgs e)
@@ -83,5 +83,10 @@ namespace FarmData.Pages
             Navigation.PushAsync(new ThreadPage(thread.ID));
         }
 
+
+        private void SavedThreadButton_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new SavedThreadsPage());
+        }
     }
 }

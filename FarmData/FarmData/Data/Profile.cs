@@ -23,6 +23,8 @@ namespace FarmData.Data
     }
     class Profile
     {
+        private static HTTPHandler handler = new HTTPHandler();
+
         public static List<string> LiveStocks = new List<string>() { "Cattle", "Sheep" };
         public static List<string> Crops = new List<string>() { "Wheat", "Corn" };
         public static List<string> Sizes = new List<string>() { "1km", "2km" };
@@ -42,7 +44,7 @@ namespace FarmData.Data
             {
                 FarmProfile = new ObservableCollection<FarmInfo>();
                 //string response = "";
-                string response = await Request.Get("/getprofile", Authentication.Email, Authentication.Password);
+                string response = await new Request(handler).Get("/getprofile", Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();

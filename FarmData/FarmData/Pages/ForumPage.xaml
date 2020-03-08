@@ -9,6 +9,8 @@
     <ContentPage.Content>
         <StackLayout x:Name="View">
             <SearchBar></SearchBar>
+            <Button x:Name="SavedThreadButton" Clicked="SavedThreadButton_Clicked"
+                            Text="{x:Static resx:Strings.SavedThreads}"></Button>
             <Button x:Name="MakeNewThread" Clicked="MakeNewThread_Clicked"
                             Text="{x:Static resx:Strings.MakeNewThread}"></Button>
             <ListView x:Name="ThreadListView"

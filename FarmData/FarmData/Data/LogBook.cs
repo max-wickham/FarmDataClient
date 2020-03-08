@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FarmData.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
@@ -21,6 +22,8 @@ namespace FarmData.Data
     }
     class LogBook
     {
+        private static HTTPHandler handler = new HTTPHandler();
+
         public static ObservableCollection<Log> LogList = new ObservableCollection<Log>();
         public static bool UpdateLogList()
         {

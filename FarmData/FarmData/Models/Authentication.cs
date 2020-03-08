@@ -8,6 +8,7 @@ namespace FarmData.Models
 {
     public class Authentication
     {
+        private static HTTPHandler handler = new HTTPHandler();
         //when the application runs the user should be autologged in 
         //using the last username and password and the session key should be stored 
         public static string Email { get; set; }
@@ -23,7 +24,7 @@ namespace FarmData.Models
             {
                 {"password",password}
             };
-            string response = await Request.Post("/login", data, email, password);
+            string response = await new Request(handler).Post("/login", data, email, password);
             if (response == "logged in") {
                 Authentication.Email = email;
                 Authentication.Password = password;
@@ -57,7 +58,7 @@ namespace FarmData.Models
             {
                 {"username",username }
             };
-            string response = await Request.Post("/usernameavailable", data);
+            string response = await new Request(handler).Post("/usernameavailable", data);
             if (response == "available") { return true; }
             //if(response == "unavailable") { return false; } 
             return false;
@@ -68,7 +69,7 @@ namespace FarmData.Models
             {
                 {"email",email }
             };
-            string response = await Request.Post("/emailavailable", data);
+            string response = await new Request(handler).Post("/emailavailable", data);
             if (response == "available") { return true; }
             //if (response == "unavailable") { return false; }
             return false;
@@ -81,7 +82,7 @@ namespace FarmData.Models
                 {"password", password },
                 {"email",email }
             };
-            string response = await Request.Post("/register", data);
+            string response = await new Request(handler).Post("/register", data);
             if (response == "added user") { return true; }
             return false;
         }

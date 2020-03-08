@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,24 +11,25 @@ namespace FarmData.Models
 
     public class Request
     {
-        public static string address = "129.31.159.50:5000";
-
-        public static async Task<String> Post(string page = "", Dictionary<String, String> data = null, string username = "", string password = "")
+        private static string address = "129.31.159.50:5000";
+        private HTTPHandler handler { get; set; }
+        public Request(HTTPHandler handler)
+        {
+            this.handler = handler;
+        }
+        public async Task<String> Post(string page = "", Dictionary<String, String> data = null, string username = "", string password = "")
         {
             try
             {
                 string responseString = "";
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = TimeSpan.FromSeconds(10);
-                    var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+                //client.Timeout = TimeSpan.FromSeconds(10);
+                var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+                handler.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-                    //string auth_address = username + ":" + password + "@" + address;
-                    var content = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
-                    var response = await client.PostAsync("http://" + address + page, content);
-                    responseString = await response.Content.ReadAsStringAsync();
-                }
+                //string auth_address = username + ":" + password + "@" + address;
+                var content = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
+                var response = await handler.client.PostAsync("http://" + address + page, content);
+                responseString = await response.Content.ReadAsStringAsync();
                 return responseString;
             }
             catch
@@ -34,21 +37,20 @@ namespace FarmData.Models
                 //need to imlplement reload here
                 return "error";
             }
+            
         }
 
-        public static async Task<String> Get(string page = "", string username = "", string password = "")
+        public async Task<String> Get(string page = "", string username = "", string password = "")
         {
             string responseString = "";
-            using (var client = new HttpClient())
-            {
-                client.Timeout = TimeSpan.FromSeconds(10);
-                var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-                //string auth_address = username + ":" + password + "@" + address;         
-                var response = await client.GetAsync("http://" + address + page);
-                responseString = await response.Content.ReadAsStringAsync();
-            }
+            //client.Timeout = TimeSpan.FromSeconds(10);
+            var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+            handler.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+            //string auth_address = username + ":" + password + "@" + address;         
+            var response = await handler.client.GetAsync("http://" + address + page);
+            responseString = await response.Content.ReadAsStringAsync();
             return responseString;
         }
 
@@ -66,8 +68,22 @@ namespace FarmData.Models
             response += "}";
             return response;
         }
+
+
+    }
+    public class HTTPHandler {
+        public HttpClient client { get; private set; }
+        public HTTPHandler()
+        {
+            client = new HttpClient();
+            client.Timeout = TimeSpan.FromSeconds(10);
+            client.MaxResponseContentBufferSize = 1000000;
+            ServicePointManager.DefaultConnectionLimit = 4;   
+        }     
     }
 
+
+    
 
     /*int timeout = 1000;
 var task = SomeOperationAsync();

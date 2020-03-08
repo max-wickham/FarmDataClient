@@ -11,9 +11,9 @@
     <TabbedPage.Children>
         <local:ReportPage Title="{x:Static resx:Strings.Report}"/>
         <local:ForumPage Title="{x:Static resx:Strings.Forum}"/>
-        <local:LogBookPage Title="{x:Static resx:Strings.Log}"/>
+        <!--<local:LogBookPage Title="{x:Static resx:Strings.Log}"/>
         <local:SavedThreadsPage Title="{x:Static resx:Strings.SavedPosts}"/>
-        <local:TestPage Title="Test"/>
+        <local:TestPage Title="Test"/> -->
     </TabbedPage.Children>
     <TabbedPage.ToolbarItems>
         <ToolbarItem x:Name="Profile" Order="Primary" Text="{x:Static resx:Strings.Profile}" Priority="0"/>
