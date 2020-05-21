@@ -1,43 +1,56 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace FarmData.Models
 {
 
     public class Request
     {
-        private static string address = "129.31.159.50:5000";
+        public static string address = "FarmData.us-west-2.elasticbeanstalk.com";
         private HTTPHandler handler { get; set; }
         public Request(HTTPHandler handler)
         {
             this.handler = handler;
         }
-        public async Task<String> Post(string page = "", Dictionary<String, String> data = null, string username = "", string password = "")
+        public async Task<String> Post(string page = "", Dictionary<String, String> data = null, string username = "", string password = "", string imagePath = "")
         {
+            if (data == null) { data = new Dictionary<string, string>(); }
             try
             {
-                string responseString = "";
-                //client.Timeout = TimeSpan.FromSeconds(10);
-                var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
-                handler.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 
-                //string auth_address = username + ":" + password + "@" + address;
-                var content = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
+                string responseString = "";
+                Dictionary<String, String> transmit = data;
+                transmit.Add("username", username);
+                transmit.Add("password", password);
+                //setup request authorisation
+                //var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+                //handler.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                //setup request content
+                var content = new StringContent(jsonify(transmit), Encoding.UTF8, "application/json");
+                //setup request image
+
+
+                //send request and get reply
                 var response = await handler.client.PostAsync("http://" + address + page, content);
+                //var response = await handler.client.PostAsync("http://" + address + page, form);
                 responseString = await response.Content.ReadAsStringAsync();
                 return responseString;
+
             }
             catch
             {
                 //need to imlplement reload here
                 return "error";
             }
-            
+
         }
 
         public async Task<String> Get(string page = "", string username = "", string password = "")
@@ -70,17 +83,67 @@ namespace FarmData.Models
         }
 
 
+
+        public async Task<String> PostTest(string page = "", Dictionary<String, String> input = null, string username = "", string password = "", string imagePath = "")
+        {
+            Dictionary<String, String> data = input;
+
+            if (data == null) { data = new Dictionary<string, string>(); }
+            try
+            {
+
+                string responseString = "";
+
+                //setup request authorisation
+                var byteArray = Encoding.ASCII.GetBytes(username + ":" + password);
+                handler.client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
+
+                //setup request content
+                //------->var content = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
+                //MultipartFormDataContent form = new MultipartFormDataContent();
+                //HttpContent json = new StringContent(jsonify(data), Encoding.UTF8, "application/json");
+                if (imagePath != "")
+                {
+                    byte[] imageBinary = File.ReadAllBytes(imagePath);
+                    string image = Convert.ToBase64String(imageBinary, 0, imageBinary.Length);//
+                    data["image"] = image;
+                    //HttpContent image = new StreamContent(new MemoryStream(imageBinary));
+                    //form.Add(image, "image", "upload.jpg");
+                }
+                var form = new StringContent(jsonify(data), Encoding.UTF8, "application/json");//
+                                                                                               //form.Add(json, "json");
+                                                                                               //setup request image
+
+
+                //send request and get reply
+                //------->var response = await handler.client.PostAsync("http://" + address + page, content);
+                var response = await handler.client.PostAsync("http://" + address + page, form);
+                responseString = await response.Content.ReadAsStringAsync();
+                return responseString;
+
+            }
+            catch
+            {
+                //need to imlplement reload here
+                return "error";
+            }
+
+        }
+
+
     }
-    public class HTTPHandler {
+    public class HTTPHandler
+    {
         public HttpClient client { get; private set; }
         public HTTPHandler()
         {
             client = new HttpClient();
             client.Timeout = TimeSpan.FromSeconds(10);
             client.MaxResponseContentBufferSize = 1000000;
-            ServicePointManager.DefaultConnectionLimit = 4;   
-        }     
+            ServicePointManager.DefaultConnectionLimit = 4;
+        }
     }
+}
 
 
     
@@ -92,4 +155,3 @@ if (await Task.WhenAny(task, Task.Delay(timeout)) == task) {
 } else { 
     // timeout logic
 }*/
-}

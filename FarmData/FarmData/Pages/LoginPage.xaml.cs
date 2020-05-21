@@ -21,6 +21,8 @@ namespace FarmData.Pages
 
         private async void LogInButton_Clicked(object sender, EventArgs e)
         {
+
+            await DisplayAlert(Strings.Error, EmailEntry.Text, Strings.Ok);
             bool loggedin = await Authentication.LogIn(EmailEntry.Text, PasswordEntry.Text);//request a session key 
             if (!loggedin)
             {

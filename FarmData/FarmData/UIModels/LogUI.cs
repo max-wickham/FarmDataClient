@@ -32,7 +32,7 @@ namespace FarmData.UIModels
             Label Description = new Label();
             //Add text to the ui elements
             Title.Text = log.Title;
-            Date.Text = log.Date.ToString();
+            Date.Text = log.CreationDate.ToString();
             Problem.Text = log.Problem;
             Description.Text = log.Description;
             //Add ui styles

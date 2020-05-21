@@ -20,14 +20,16 @@ namespace FarmData.Models
         public static async Task<bool> LogIn(string email, string password)
         {
 
-            Dictionary<String, String> data = new Dictionary<String, String>()
-            {
-                {"password",password}
-            };
-            string response = await new Request(handler).Post("/login", data, email, password);
+            //Dictionary<String, String> data = new Dictionary<String, String>()
+            //{
+            //    {"password",password},
+            //    {"username",email}
+            //};
+            string response = await new Request(handler).Post("/login", null, email, password);
+            //DisplayAlert(Strings.Error, Strings.LoginAlert, Strings.Ok);
             if (response == "logged in") {
-                Authentication.Email = email;
-                Authentication.Password = password;
+                Email = email;
+                Password = password;
                 SaveEmailPassword(email, password);
                 return true; 
             }
@@ -35,8 +37,8 @@ namespace FarmData.Models
         }
         public static void SaveEmailPassword(string email, string password)
         {
-            Authentication.Email = email;
-            Authentication.Password = password;
+            Email = email;
+            Password = password;
             Application.Current.Properties["email"] = email;
             Application.Current.Properties["password"] = password;
         }
@@ -91,7 +93,9 @@ namespace FarmData.Models
             return true;
         }
 
-        public static async void AuthenticationError() { }
+        public static async void AuthenticationError() {
+        //TODO implement
+        }
 
     }
 }

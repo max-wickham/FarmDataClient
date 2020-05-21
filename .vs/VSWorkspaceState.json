@@ -3,10 +3,8 @@
     "",
     "\\FarmData",
     "\\FarmData\\FarmData",
-    "\\FarmData\\FarmData\\FarmData",
-    "\\FarmData\\FarmData\\FarmData\\Data",
-    "\\FarmData\\FarmData\\FarmData\\Pages"
+    "\\FarmData\\FarmData\\Pages"
   ],
-  "SelectedNode": "\\FarmData\\FarmData\\FarmData\\Pages\\AddFarmInfoPage.xaml.cs",
+  "SelectedNode": "\\FarmData\\FarmData\\Pages\\AddCropPage.xaml",
   "PreviewInSolutionExplorer": false
 }

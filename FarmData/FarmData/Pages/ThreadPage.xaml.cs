@@ -37,7 +37,7 @@ namespace FarmData.Pages
                 if (response != "error")
                 {
                     Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(response);
-                    thread = new Thread(values["title"], values["user"], null, values["description"], DateTime.Now, 0, id);
+                    thread = new Thread(values["title"], values["user"], null, values["description"], "", 0, id);
 
                     SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
                     SaveButton.Clicked += SaveButton_Clicked;
@@ -77,9 +77,10 @@ namespace FarmData.Pages
         {
             SaveButton.IsEnabled = false;
             ToolbarItem button = sender as ToolbarItem;
-            if (Threads.IsSaved(thread)) { await Threads.RemoveSavedThread(thread); }
-            else {await Threads.SaveNewThread(thread); }
-            SaveButton.Text = Threads.IsSaved(thread) ? Strings.Unsave : Strings.Save;
+            bool issaved = false;
+            if (Threads.IsSaved(thread)) { issaved = !(await Threads.RemoveSavedThread(thread)); }
+            else {issaved = await Threads.SaveNewThread(thread); }
+            SaveButton.Text = issaved ? Strings.Unsave : Strings.Save;
             SaveButton.IsEnabled = true;
         }
 

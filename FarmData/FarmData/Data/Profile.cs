@@ -13,7 +13,7 @@ namespace FarmData.Data
     {
         public string Name { get; set; }
         public Tuple<double, double> Location { get; set; }
-        public string Size { get; set; }//size in acres 
+        public string Size { get; set; }
         public FarmInfo(string name, Tuple<double, double> location, string size)
         {
             Name = name;
@@ -24,6 +24,7 @@ namespace FarmData.Data
     class Profile
     {
         private static HTTPHandler handler = new HTTPHandler();
+        private static Request request = new Request(handler);
 
         public static List<string> LiveStocks = new List<string>() { "Cattle", "Sheep" };
         public static List<string> Crops = new List<string>() { "Wheat", "Corn" };
@@ -32,19 +33,19 @@ namespace FarmData.Data
         public static ObservableCollection<FarmInfo> FarmProfile = new ObservableCollection<FarmInfo>();
         public static async Task<bool> UpdateFarmProfile()
         {
-            Tuple<double, double> tup = new Tuple<double, double>(1, 2);
+            //Tuple<double, double> tup = new Tuple<double, double>(1, 2);
             FarmProfile = new ObservableCollection<FarmInfo>();
-            FarmInfo farmInfo = new FarmInfo("wheat",tup, "6");
-            FarmProfile.Add(farmInfo);
-            FarmProfile.Add(farmInfo);
-            FarmProfile.Add(farmInfo);
+            //FarmInfo farmInfo = new FarmInfo("wheat",tup, "6");
+            //FarmProfile.Add(farmInfo);
+            //FarmProfile.Add(farmInfo);
+            //FarmProfile.Add(farmInfo);
             //return true;
 
             try
             {
-                FarmProfile = new ObservableCollection<FarmInfo>();
+                //FarmProfile = new ObservableCollection<FarmInfo>();
                 //string response = "";
-                string response = await new Request(handler).Get("/getprofile", Authentication.Email, Authentication.Password);
+                string response = await request.Get("/getprofile", Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -61,7 +62,7 @@ namespace FarmData.Data
                     foreach (var val in values)
                     {
                             FarmInfo info = new FarmInfo(val.Value["name"],
-                                new Tuple<double,double>(Int32.Parse(val.Value["x"]),Int32.Parse(val.Value["y"])), 
+                                new Tuple<double,double>(double.Parse(val.Value["x"]),double.Parse(val.Value["y"])), 
                                 val.Value["size"]);
                             FarmProfile.Add(info);
                     }
@@ -75,6 +76,7 @@ namespace FarmData.Data
         }
         public static bool SaveNewProfile(FarmInfo farmInfo)
         {
+            //TODO implement
             return true;
         }
     }

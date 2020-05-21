@@ -12,20 +12,20 @@ namespace FarmData.Data
 {
     class Threads
     {
-        public static string errorString = "hello";
-        //static Thread thread1 = new Thread("hello", "max", null, "description", DateTime.Now, 5);
-        //public static List<Thread> ThreadList = new List<Thread>();
         public static ObservableCollection<Thread> ThreadList = new ObservableCollection<Thread>();
-        //public static List<Thread> SavedThreads = new List<Thread>();
         public static ObservableCollection<Thread> SavedThreads = new ObservableCollection<Thread>();
 
+        //Objects for HTTP Requests
         private static HTTPHandler handler = new HTTPHandler();
+        private static Request request = new Request(handler);
+
+        //Updates the thread list
         public static async Task<bool> UpdateThreads()
         {
             try
             {
                 ThreadList = new ObservableCollection<Thread>();
-                string response = await new Request(handler).Get("/getthreadlist", Authentication.Email, Authentication.Password);
+                string response = await  request.Post("/getthreadlist",null, Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -35,12 +35,17 @@ namespace FarmData.Data
                 {
                     return false;
                 }
+                if (response == "empty")//this needs to be made simpler
+                {
+                    return true;
+                }
                 else
                 {
                     Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
                     foreach (var val in values)
                     { 
-                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], DateTime.Now,0, Int32.Parse(val.Key));
+                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], "", 0, Int32.Parse(val.Key));
+                        //thread.PhotoSource = "http://" + Request.address + "/getimage/" + val.Key; 
                         ThreadList.Add(thread);
                     }
                     return true;
@@ -48,16 +53,12 @@ namespace FarmData.Data
             }
             catch
             {
-                errorString = "fail";
                 return false;
             }
         }
-        public static async Task<bool> PostNewThread(string title, string description)
-        {
-            Dictionary<string, string> data = new Dictionary<string, string>();
-            data["title"] = title;
-            data["description"] = description;
-            string response = await new Request(handler).Post("/getcreatethread", data, Authentication.Email, Authentication.Password);
+        public static async Task<bool> PostNewThread(Dictionary<string, string> data)
+        { 
+            string response = await request.Post("/getcreatethread", data, Authentication.Email, Authentication.Password,"");
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -69,7 +70,7 @@ namespace FarmData.Data
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = id.ToString();
-            string response = await new Request(handler).Post("/getthread", data, Authentication.Email, Authentication.Password);
+            string response = await request.Post("/getthread", data, Authentication.Email, Authentication.Password);
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -84,7 +85,7 @@ namespace FarmData.Data
             try
             {
                 SavedThreads = new ObservableCollection<Thread>();
-                string response = await new Request(handler).Get("/getsaves", Authentication.Email, Authentication.Password);
+                string response = await request.Post("/getsaves",null, Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -99,7 +100,7 @@ namespace FarmData.Data
                     Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
                     foreach (var val in values)
                     {
-                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], DateTime.Now, 0, Int32.Parse(val.Key));
+                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], "", 0, Int32.Parse(val.Key));
                         SavedThreads.Add(thread);
                     }
                     return true;
@@ -114,7 +115,7 @@ namespace FarmData.Data
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = thread.ID.ToString();
-            string response = await new Request(handler).Post("/getsavethread", data, Authentication.Email, Authentication.Password);
+            string response = await request.Post("/getsavethread", data, Authentication.Email, Authentication.Password);
             if(response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -123,13 +124,14 @@ namespace FarmData.Data
             if(response == "saved")
             {
                 SavedThreads.Add(thread);
+                return true;
             }
             return false;
         }
         public static async Task<bool> RemoveSavedThread(Thread thread){
             Dictionary<string, string> data = new Dictionary<string, string>();
             data["thread_id"] = thread.ID.ToString();
-            string response = await new Request(handler).Post("/getunsavethread", data, Authentication.Email, Authentication.Password);
+            string response = await request.Post("/getunsavethread", data, Authentication.Email, Authentication.Password);
             if (response == "Unauthorized Access")
             {
                 Authentication.AuthenticationError();
@@ -138,16 +140,14 @@ namespace FarmData.Data
             if (response == "unsaved")
             {
                 SavedThreads.Remove(thread);
+                return true;
             }
             return false;
         }
         public static ObservableCollection<Thread> SearchThreads(string search)
         {
-            //if(search == "")
-           // {
-                return ThreadList;
-            //}
-           // return new List<Thread>();
+            //TODO implement    
+            return ThreadList;
         }
         public static bool IsSaved(Thread thread)
         {
@@ -169,9 +169,9 @@ namespace FarmData.Data
         public string UserName { get; set; }
         public string PhotoSource { get; set; }
         public string Description { get; set; }
-        public DateTime CreationDate { get; set; }
+        public string CreationDate { get; set; }
         public int CommentCount { get; set; }
-        public Thread(string title, string userName, string photoSource, string description, DateTime creationDate, int commentCount, int id)
+        public Thread(string title, string userName, string photoSource, string description, string creationDate, int commentCount, int id)
         {
             ID = id;
             Title = title;
@@ -181,7 +181,7 @@ namespace FarmData.Data
             CreationDate = creationDate;
             CommentCount = commentCount;
         }
-        public Thread(int id, string title, string userName, string photoSource, string description, DateTime creationDate, int commentCount)
+        public Thread(int id, string title, string userName, string photoSource, string description, string creationDate, int commentCount)
         {
             ID = id;
             Title = title;

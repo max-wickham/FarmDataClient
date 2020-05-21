@@ -10,7 +10,7 @@ using Xamarin.Forms;
 namespace FarmData.Data
 {
     //TODO needs to contain a list of reports that are downloaded from the server
-    public class Report
+    public abstract class Report
     {
         public string Type { get; set; }
         public string Warning { get; set; }
@@ -26,7 +26,7 @@ namespace FarmData.Data
             Type = crop;
             Disease = disease;
             Warning = warning;
-            WarningColour = "black";
+            WarningColour = "black";//TODO
             Description = description;
         }
     }
@@ -36,16 +36,18 @@ namespace FarmData.Data
         {
             Type = weather;
             Warning = warning;
-            WarningColour = "black";
+            WarningColour = "black";//TODO
             Description = description;
         }
     }
     public class Reports
     {
+        private static HTTPHandler handler = new HTTPHandler();
+        private static Request request = new Request(handler);
         //public static List<Crop> cropReportsList = new List<Crop>();
         //public static List<Weather> weatherReportsList = new List<Weather>();
         public static ObservableCollection<Report> ReportList = new ObservableCollection<Report>();
-        private static HTTPHandler handler = new HTTPHandler();
+        
         public static async Task<bool> UpdateReports()
         {
             ReportList.Add(new Crop("Corn2", "Aphid", "High Risk", "Based on public data in area and weather data"));
@@ -53,7 +55,7 @@ namespace FarmData.Data
             {
                 ReportList = new ObservableCollection<Report>();
                 //string response = "";
-                string response = await new Request(handler).Get("/getreport", Authentication.Email, Authentication.Password);
+                string response = await request.Post("/getreport",null, Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();

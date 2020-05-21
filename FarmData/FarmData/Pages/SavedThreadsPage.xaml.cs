@@ -18,7 +18,7 @@ namespace FarmData.Pages
     public partial class SavedThreadsPage : ContentPage
     {
         //public IList<Thread> ThreadList { get; private set; }
-        public ObservableCollection<Thread> SavedThreadsList { get; set; }
+        public ObservableCollection<Thread> SavedThreadsList { get; private set; }
         public SavedThreadsPage()
         {
             InitializeComponent();

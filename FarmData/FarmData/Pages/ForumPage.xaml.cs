@@ -19,7 +19,7 @@ namespace FarmData.Pages
     public partial class ForumPage : ContentPage
     {
         //public IList<Thread> ThreadList { get; private set; }
-        public ObservableCollection<Thread> ThreadList { get; set; }
+        public ObservableCollection<Thread> ThreadList { get; private set; }
         public ForumPage()
         {
             InitializeComponent();
@@ -30,7 +30,7 @@ namespace FarmData.Pages
             Task<bool> cont = Threads.UpdateThreads();
             if (await cont)
             {
-                ThreadList = Threads.ThreadList;
+               ThreadList = Threads.ThreadList;
                BindingContext = this;
             }
             else
