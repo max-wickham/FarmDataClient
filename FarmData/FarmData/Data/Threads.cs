@@ -44,7 +44,7 @@ namespace FarmData.Data
                     Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
                     foreach (var val in values)
                     { 
-                        Thread thread = new Thread(val.Value["title"], val.Value["username"], null, val.Value["description"], "", 0, Int32.Parse(val.Key));
+                        Thread thread = new Thread(val.Value["title"], val.Value["username"], val.Value["image"], val.Value["description"], "", 0, Int32.Parse(val.Key));
                         //thread.PhotoSource = "http://" + Request.address + "/getimage/" + val.Key; 
                         ThreadList.Add(thread);
                     }

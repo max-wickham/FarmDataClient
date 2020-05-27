@@ -28,11 +28,12 @@ namespace FarmData.Pages
              Dictionary<string, string> data = new Dictionary<string, string>();
              data["title"] = TitleEntry.Text;
              data["description"] = DescriptionEntry.Text;
-             if(photoSource != "")
+             if(photoSource != null && photoSource != "")
              {
                 byte[] imageBinary = File.ReadAllBytes(photoSource);
                 string image = Convert.ToBase64String(imageBinary, 0, imageBinary.Length);//
                 data["image"] = image;
+                data["imagetype"] = System.IO.Path.GetExtension(photoSource);
              }
              Thread thread = new Thread(TitleEntry.Text,Authentication.Email, photoSource, DescriptionEntry.Text,"",0,0);
              if(await Threads.PostNewThread(data))
