@@ -11,6 +11,7 @@
             <StackLayout>
                 <Grid>
                     <StackLayout x:Name="View">
+                        <Entry x:Name="NameEntry"></Entry>
                         <Picker x:Name="LiveStockPicker"/>
                         <Entry x:Name="OtherEntry"/>
                         <Picker x:Name="SizePicker"/>

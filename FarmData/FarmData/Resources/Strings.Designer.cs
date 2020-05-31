@@ -97,6 +97,15 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Corn.
+        /// </summary>
+        public static string Corn {
+            get {
+                return ResourceManager.GetString("Corn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Crop.
         /// </summary>
         public static string Crop {
@@ -120,6 +129,15 @@ namespace FarmData.Resources {
         public static string Description {
             get {
                 return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Drought.
+        /// </summary>
+        public static string Drought {
+            get {
+                return ResourceManager.GetString("Drought", resourceCulture);
             }
         }
         
@@ -160,11 +178,38 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Flood.
+        /// </summary>
+        public static string Flood {
+            get {
+                return ResourceManager.GetString("Flood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Forum.
         /// </summary>
         public static string Forum {
             get {
                 return ResourceManager.GetString("Forum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Frost.
+        /// </summary>
+        public static string Frost {
+            get {
+                return ResourceManager.GetString("Frost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fungus.
+        /// </summary>
+        public static string Fungus {
+            get {
+                return ResourceManager.GetString("Fungus", resourceCulture);
             }
         }
         
@@ -241,6 +286,15 @@ namespace FarmData.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Other.
+        /// </summary>
+        public static string Other {
+            get {
+                return ResourceManager.GetString("Other", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
         public static string PasswordEntry {
@@ -264,6 +318,15 @@ namespace FarmData.Resources {
         public static string PasswordMismatch {
             get {
                 return ResourceManager.GetString("PasswordMismatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pest or Disease.
+        /// </summary>
+        public static string PestDisease {
+            get {
+                return ResourceManager.GetString("PestDisease", resourceCulture);
             }
         }
         

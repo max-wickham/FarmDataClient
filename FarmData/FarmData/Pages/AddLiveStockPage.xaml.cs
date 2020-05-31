@@ -36,11 +36,13 @@ namespace FarmData.Pages
             position = e.Position;
         }
 
-        private void Save_Clicked(object sender, EventArgs e)
+        private async void Save_Clicked(object sender, EventArgs e)
         {
+            (sender as Button).IsEnabled = false;
             Tuple<double, double> location = new Tuple<double, double>(position.Latitude, position.Longitude);
-            FarmInfo farmInfo = new FarmInfo((LiveStockPicker.SelectedItem as string), location, (SizePicker.SelectedItem as string));
-            if (Profile.SaveNewProfile(farmInfo)) { Navigation.PushAsync(new HomePage()); }
+            FarmInfo farmInfo = new FarmInfo(NameEntry.Text,(LiveStockPicker.SelectedItem as string), location, (SizePicker.SelectedItem as string));
+            if (await Profile.SaveNewProfile(farmInfo)) { await Navigation.PushAsync(new HomePage()); }
+            (sender as Button).IsEnabled = true;
         }
     }
 }

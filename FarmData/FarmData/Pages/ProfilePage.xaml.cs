@@ -41,8 +41,8 @@ namespace FarmData.Pages
         {
             if (await Profile.UpdateFarmProfile())
             {
-                BindingContext = this;
                 FarmInfoList = Profile.FarmProfile;
+                BindingContext = this;
             }
             else
             {

@@ -129,6 +129,9 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Corn" xml:space="preserve">
+    <value>Corn</value>
+  </data>
   <data name="Crop" xml:space="preserve">
     <value>Crop</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description &gt;</value>
+  </data>
+  <data name="Drought" xml:space="preserve">
+    <value>Drought</value>
   </data>
   <data name="EmailEntry" xml:space="preserve">
     <value>Email</value>
@@ -150,8 +156,17 @@
   <data name="ErrorLoading" xml:space="preserve">
     <value>Error Loading</value>
   </data>
+  <data name="Flood" xml:space="preserve">
+    <value>Flood</value>
+  </data>
   <data name="Forum" xml:space="preserve">
     <value>Forum</value>
+  </data>
+  <data name="Frost" xml:space="preserve">
+    <value>Frost</value>
+  </data>
+  <data name="Fungus" xml:space="preserve">
+    <value>Fungus</value>
   </data>
   <data name="Info" xml:space="preserve">
     <value>Info</value>
@@ -177,6 +192,9 @@
   <data name="Ok" xml:space="preserve">
     <value>Ok</value>
   </data>
+  <data name="Other" xml:space="preserve">
+    <value>Other</value>
+  </data>
   <data name="PasswordEntry" xml:space="preserve">
     <value>Password</value>
   </data>
@@ -185,6 +203,9 @@
   </data>
   <data name="PasswordMismatch" xml:space="preserve">
     <value>Passwords fields must be the same</value>
+  </data>
+  <data name="PestDisease" xml:space="preserve">
+    <value>Pest or Disease</value>
   </data>
   <data name="Profile" xml:space="preserve">
     <value>Profile</value>

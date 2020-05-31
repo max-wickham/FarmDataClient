@@ -10,7 +10,7 @@
     
     <TabbedPage.Children>
         <local:ReportPage Title="{x:Static resx:Strings.Report}"/>
-        <local:ForumPage Title="{x:Static resx:Strings.Forum}"/>
+        <local:LogBookPage Title="{x:Static resx:Strings.Forum}"/>
         <!--<local:LogBookPage Title="{x:Static resx:Strings.Log}"/>
         <local:SavedThreadsPage Title="{x:Static resx:Strings.SavedPosts}"/>
         <local:TestPage Title="Test"/> -->

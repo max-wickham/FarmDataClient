@@ -7,9 +7,11 @@
              x:Class="FarmData.Pages.AddLogPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+            <Picker x:Name="FarmPicker" SelectedIndexChanged="SetPicker"></Picker>
+            <Picker x:Name="ProblemClassPicker" SelectedIndexChanged="SetPicker"></Picker>
+            <Picker x:Name="ProblemTypePicker" IsVisible="False"></Picker>
+            <Entry x:Name="DescriptionEntry"></Entry>
+            <Button x:Name="SaveButton" Clicked="SaveButton_Clicked"></Button>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

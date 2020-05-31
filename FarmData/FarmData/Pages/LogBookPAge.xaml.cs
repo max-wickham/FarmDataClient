@@ -20,7 +20,11 @@ namespace FarmData.Pages
         public LogBookPage()
         {
             InitializeComponent();
-            if (LogBook.UpdateLogList())
+            setup();
+        }
+        async void setup()
+        {
+            if (await LogBook.UpdateLogList())
             {
                 RenderPage();
             }
@@ -37,7 +41,6 @@ namespace FarmData.Pages
                 View.Children.Add(reload);
             }
         }
-
         private void Reload_Clicked(object sender, EventArgs e)
         {
             Navigation.PushAsync(new HomePage());
@@ -51,7 +54,7 @@ namespace FarmData.Pages
 
         private void AddLog_Clicked(object sender, EventArgs e)
         {
-
+            Navigation.PushAsync(new AddLogPage());
         }
     }
 }

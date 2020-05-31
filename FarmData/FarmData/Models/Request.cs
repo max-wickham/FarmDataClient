@@ -13,7 +13,8 @@ namespace FarmData.Models
 
     public class Request
     {
-        public static string address = "FarmData.us-west-2.elasticbeanstalk.com";
+        //public static string address = "FarmData.us-west-2.elasticbeanstalk.com";
+        public static string address = "192.168.1.77:5000";
         private HTTPHandler handler { get; set; }
         public Request(HTTPHandler handler)
         {
