@@ -23,16 +23,16 @@ namespace FarmData
 
         async void LogIn()
         {
-            bool loggedin = false;
-            loggedin = await Authentication.LogIn(Authentication.GetEmail(), Authentication.GetPassword());
-            if (!loggedin)
-            {
+            //bool loggedin = false;
+            //loggedin = await Authentication.LogIn(Authentication.GetEmail(), Authentication.GetPassword());
+            //if (!loggedin)
+            //{
                 await Navigation.PushAsync(new LoginPage());
-            }
-            else
-            {
-                await Navigation.PushAsync(new HomePage());
-            }
+            //}
+            //else
+           // {
+           //     await Navigation.PushAsync(new HomePage());
+           // }
         }
     }
 }

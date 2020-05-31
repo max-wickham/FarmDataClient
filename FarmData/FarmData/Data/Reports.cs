@@ -13,6 +13,7 @@ namespace FarmData.Data
     public abstract class Report
     {
         public string Type { get; set; }
+        public string Title { get; set; }
         public string Warning { get; set; }
         public string WarningColour { get; set; } //hex
         public string Description { get; set; }
@@ -20,23 +21,32 @@ namespace FarmData.Data
     }
     public class Crop:Report
     {
-        public string Disease { get; set; }
-        public Crop(string crop, string disease, string warning, string description)
+        public Crop(string problem, string title, string warning, string description)
         {
-            Type = crop;
-            Disease = disease;
+            Type = problem;
+            Title = title;
             Warning = warning;
-            WarningColour = "black";//TODO
+            Description = description;
+        }
+    }
+    public class LiveStock : Report
+    {
+        public string Disease { get; set; }
+        public LiveStock(string problem, string title, string warning, string description)
+        {
+            Title = title;
+            Type = problem;
+            Warning = warning;
             Description = description;
         }
     }
     public class Weather:Report
     {
-        public Weather(string weather, string warning, string description)
+        public Weather(string problem, string title, string warning, string description)
         {
-            Type = weather;
+            Type = problem;
             Warning = warning;
-            WarningColour = "black";//TODO
+            Title = title;
             Description = description;
         }
     }
@@ -55,7 +65,7 @@ namespace FarmData.Data
             {
                 ReportList = new ObservableCollection<Report>();
                 //string response = "";
-                string response = await request.Post("/getreport",null, Authentication.Email, Authentication.Password);
+                string response = await request.Post("/getreports",null, Authentication.Email, Authentication.Password);
                 if (response == "Unauthorized Access")
                 {
                     Authentication.AuthenticationError();
@@ -74,17 +84,21 @@ namespace FarmData.Data
                     Dictionary<string, Dictionary<string, string>> values = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(response);
                     foreach (var val in values)
                     {
-                        if(val.Key == "crop")
+                        if(val.Key.Split(',')[0] == "crop")
                         {
-                            Crop crop = new Crop(val.Value["crop"], val.Value["problem"], val.Value["warning"], val.Value["description"]);
+                            Crop crop = new Crop(val.Value["problem"], val.Value["title"], val.Value["warning"], val.Value["description"]);
                             ReportList.Add(crop);
                         }
-                        if(val.Key == "weather")
+                        if (val.Key.Split(',')[0] == "livestock")
                         {
-                            Weather weather = new Weather(val.Value["weather"], val.Value["warning"], val.Value["description"]);
+                            LiveStock livestock = new LiveStock(val.Value["problem"], val.Value["title"], val.Value["warning"], val.Value["description"]);
+                            ReportList.Add(livestock);
+                        }
+                        if (val.Key.Split(',')[0] == "weather")
+                        {
+                            Weather weather = new Weather(val.Value["problem"], val.Value["title"], val.Value["warning"], val.Value["description"]);
                             ReportList.Add(weather);
                         }
-                        
                     }
                     return true;
                 }

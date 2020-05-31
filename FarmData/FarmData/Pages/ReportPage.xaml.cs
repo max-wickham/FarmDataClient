@@ -67,12 +67,13 @@ namespace FarmData.Pages
     public class ReportDataTemplateSelector : DataTemplateSelector
     {
         public DataTemplate CropTemplate { get; set; }
+        public DataTemplate LiveStockTemplate { get; set; }
         public DataTemplate WeatherTemplate { get; set; }
 
         protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
         {
 
-            return item.GetType() == typeof(Crop) ? CropTemplate : WeatherTemplate;
+            return item.GetType() == typeof(Crop) ? CropTemplate : (item.GetType() == typeof(Weather) ? WeatherTemplate : LiveStockTemplate);
         }
     }
 }
